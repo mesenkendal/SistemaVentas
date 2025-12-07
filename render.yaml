@@ -1,10 +1,8 @@
 services:
   - type: web
     name: sistema-ventas
-    runtime: php
-    runtimeVersion: 8.2
-    buildCommand: composer install
-    startCommand: start_php_server
+    env: docker
+    dockerfilePath: Dockerfile.render
     envVars:
       - key: APP_NAME
         value: Sistema de Ventas
