@@ -80,10 +80,7 @@ unset($_SESSION['flash_error'], $_SESSION['flash_success']);
                         <input type="password" id="clave" name="clave" placeholder="••••••••" required autocomplete="current-password">
                     </div>
                 </div>
-                <div class="actions">
-                    <a href="<?= htmlspecialchars($publicBase); ?>/recuperar-clave.php">Olvid&eacute; mi clave</a>
-                    <a href="<?= htmlspecialchars($publicBase); ?>/register.php">Crear cuenta</a>
-                </div>
+               
                 <button type="submit">Iniciar sesi&oacute;n</button>
             </form>
             <div class="security-strip">

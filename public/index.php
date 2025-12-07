@@ -212,8 +212,6 @@ $navItems = filtered_nav_items($publicBase);
         </div>
     </main>
 
-    <footer>
-        &copy; <?= date('Y'); ?> <?= e($appName); ?> · Panel ejecutivo en desarrollo.
-    </footer>
+    
 </body>
 </html>
