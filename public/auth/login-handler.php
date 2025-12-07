@@ -12,8 +12,8 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 $config = require __DIR__ . '/../../bootstrap.php';
 require_once __DIR__ . '/../../includes/db.php';
 
-$baseUrl = rtrim($config['app']['base_url'] ?? '/SistemaVentas', '/');
-$publicBase = rtrim($config['app']['public_url'] ?? $baseUrl . '/public', '/');
+$baseUrl = rtrim($config['app']['base_url'] ?? '/', '/');
+$publicBase = rtrim($config['app']['public_url'] ?? $baseUrl, '/');
 $loginUrl = $publicBase . '/login.php';
 $homeUrl = $publicBase . '/index.php';
 
@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-$usuario = trim((string) filter_input(INPUT_POST, 'usuario', FILTER_SANITIZE_STRING));
+$usuario = trim((string) filter_input(INPUT_POST, 'usuario', FILTER_UNSAFE_RAW));
 $clave = (string) filter_input(INPUT_POST, 'clave');
 
 if ($usuario === '' || $clave === '') {

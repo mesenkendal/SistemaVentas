@@ -13,8 +13,8 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 $config = require __DIR__ . '/../../bootstrap.php';
 require_once __DIR__ . '/../../includes/db.php';
 
-$baseUrl = rtrim($config['app']['base_url'] ?? '/SistemaVentas', '/');
-$publicBase = rtrim($config['app']['public_url'] ?? $baseUrl . '/public', '/');
+$baseUrl = rtrim($config['app']['base_url'] ?? '/', '/');
+$publicBase = rtrim($config['app']['public_url'] ?? $baseUrl, '/');
 $registerUrl = $publicBase . '/register.php';
 $loginUrl = $publicBase . '/login.php';
 
@@ -23,8 +23,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-$nombre = trim((string) filter_input(INPUT_POST, 'nombre', FILTER_SANITIZE_STRING));
-$apellido = trim((string) filter_input(INPUT_POST, 'apellido', FILTER_SANITIZE_STRING));
+$nombre = trim((string) filter_input(INPUT_POST, 'nombre', FILTER_UNSAFE_RAW));
+$apellido = trim((string) filter_input(INPUT_POST, 'apellido', FILTER_UNSAFE_RAW));
 $rolId = (int) filter_input(INPUT_POST, 'rol', FILTER_VALIDATE_INT);
 $clave = (string) filter_input(INPUT_POST, 'clave');
 $claveConfirmacion = (string) filter_input(INPUT_POST, 'clave_confirmacion');

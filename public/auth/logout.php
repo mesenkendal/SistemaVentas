@@ -16,8 +16,8 @@ if (ini_get('session.use_cookies')) {
 session_destroy();
 
 $config = require __DIR__ . '/../../bootstrap.php';
-$baseUrl = rtrim($config['app']['base_url'] ?? '/SistemaVentas', '/');
-$publicBase = rtrim($config['app']['public_url'] ?? $baseUrl . '/public', '/');
+$baseUrl = rtrim($config['app']['base_url'] ?? '/', '/');
+$publicBase = rtrim($config['app']['public_url'] ?? $baseUrl, '/');
 
 header('Location: ' . $publicBase . '/login.php');
 exit;
