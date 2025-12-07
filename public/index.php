@@ -116,7 +116,7 @@ $navItems = filtered_nav_items($publicBase);
     <?php endif; ?>
 
     <main>
-    <?php require __DIR__ . '/../includes/footer.php'; ?>
+    
         <section class="hero">
             <h1>Hola, <?= e($user['apellido']); ?>. Monitorea el pulso del negocio.</h1>
             <p>Síntesis operativa de inventario, ventas y colaboradores activos.</p>
@@ -210,6 +210,7 @@ $navItems = filtered_nav_items($publicBase);
                 </div>
             </div>
         </div>
+        <?php require __DIR__ . '/../includes/footer.php'; ?>
     </main>
 
     
