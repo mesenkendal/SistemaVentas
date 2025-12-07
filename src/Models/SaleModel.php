@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SistemaVentas\Models;
 
 use PDOException;
+use SistemaVentas\Models\InventoryModel;
 
 final class SaleModel extends BaseModel
 {
@@ -62,6 +63,9 @@ final class SaleModel extends BaseModel
                 $this->logAction('DetallesVenta', 'CREAR', (int) $this->lastInsertId(), $detalle, $userId);
             }
 
+            // Descontar stock por cada detalle
+            $this->adjustInventoryStock($detalles, -1.0, $userId);
+
             $this->db->commit();
             $this->logAction(self::TABLE, 'CREAR', $ventaId, $ventaData, $userId);
             return $ventaId;
@@ -75,6 +79,12 @@ final class SaleModel extends BaseModel
     {
         $this->db->beginTransaction();
         try {
+            // Reponer stock de los detalles anteriores antes de reemplazar
+            $oldDetails = $this->getActiveDetails($ventaId);
+            if (!empty($oldDetails)) {
+                $this->adjustInventoryStock($oldDetails, +1.0, $userId);
+            }
+
             $rows = $this->execute(
                 'UPDATE ' . self::TABLE . ' SET Fecha = :Fecha, Cliente = :Cliente, Total = :Total, IdUsuario = :IdUsuario
                  WHERE IdVenta = :IdVenta AND Activo = 1',
@@ -107,6 +117,9 @@ final class SaleModel extends BaseModel
                 $this->logAction('DetallesVenta', 'ACTUALIZAR_DESDE_VENTA', (int) $this->lastInsertId(), $detalle, $userId);
             }
 
+            // Descontar stock con los nuevos detalles
+            $this->adjustInventoryStock($detalles, -1.0, $userId);
+
             $this->db->commit();
             $this->logAction(self::TABLE, 'ACTUALIZAR', $ventaId, $ventaData, $userId);
             return $rows;
@@ -120,6 +133,12 @@ final class SaleModel extends BaseModel
     {
         $this->db->beginTransaction();
         try {
+            // Antes de desactivar la venta, reponer stock de sus detalles activos
+            $oldDetails = $this->getActiveDetails($id);
+            if (!empty($oldDetails)) {
+                $this->adjustInventoryStock($oldDetails, +1.0, $userId);
+            }
+
             $rows = $this->execute('UPDATE ' . self::TABLE . ' SET Activo = 0 WHERE IdVenta = ? AND Activo = 1', [$id]);
             if ($rows > 0) {
                 $this->execute('UPDATE DetallesVenta SET Activo = 0 WHERE IdVenta = ? AND Activo = 1', [$id]);
@@ -137,5 +156,32 @@ final class SaleModel extends BaseModel
     public function delete(int $id, ?int $userId = null): int
     {
         return $this->softDelete($id, $userId);
+    }
+
+    /**
+     * Obtiene los detalles activos de una venta (CodigoProducto, Cantidad).
+     *
+     * @return array<int, array{CodigoProducto:int,Cantidad:float}>
+     */
+    private function getActiveDetails(int $ventaId): array
+    {
+        return $this->fetchAll(
+            'SELECT CodigoProducto, Cantidad FROM DetallesVenta WHERE IdVenta = :IdVenta AND Activo = 1',
+            [':IdVenta' => $ventaId]
+        );
+    }
+
+    /**
+     * Ajusta stock del inventario según los detalles de venta.
+     * sign = -1 descuenta; sign = +1 repone.
+     */
+    private function adjustInventoryStock(array $detalles, float $sign, ?int $userId = null): void
+    {
+        $inventory = new InventoryModel();
+        foreach ($detalles as $detalle) {
+            $codigo = (int) $detalle['CodigoProducto'];
+            $cantidad = (float) $detalle['Cantidad'] * $sign;
+            $inventory->adjustStock($codigo, $cantidad, $userId);
+        }
     }
 }
