@@ -1,0 +1,44 @@
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Dependencies
+vendor/
+composer.lock
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# OS
+Thumbs.db
+
+# Temporary files
+tmp/
+temp/
+
+# Database backups (keep only in local backups directory)
+*.sql.bak
+*.sql.zip
+
+# Cache files
+*.cache
+.cache/
+
+# Session files
+sessions/
+*.sess
+
+# Uploads (if any)
+uploads/

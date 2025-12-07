@@ -1,0 +1,308 @@
+:root {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.reports-layout {
+    width: min(1200px, calc(100% - 3rem));
+    margin: 2rem auto 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.reports-hero {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1.75rem;
+    padding: 2.25rem;
+    border-radius: 28px;
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(5, 9, 17, 0.92));
+    border: 1px solid var(--border);
+    box-shadow: 0 25px 60px rgba(5, 9, 17, 0.7);
+}
+
+.reports-hero h1 {
+    margin: 0.3rem 0 0.75rem;
+    font-size: clamp(2rem, 4vw, 2.6rem);
+    color: #fff;
+}
+
+.reports-hero p {
+    margin: 0;
+    color: var(--slate-dim);
+    max-width: 520px;
+}
+
+.eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-size: 0.8rem;
+    color: var(--gold);
+    margin: 0;
+}
+
+.reports-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+    width: 100%;
+}
+
+.reports-stats div {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    padding: 1rem 1.25rem;
+}
+
+.reports-stats span {
+    display: block;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--slate-dim);
+}
+
+.reports-stats strong {
+    font-size: 1.5rem;
+    color: #fff;
+    margin-top: 0.25rem;
+}
+
+.reports-card {
+    background: var(--panel);
+    border-radius: 24px;
+    border: 1px solid var(--border);
+    padding: 1.9rem;
+    box-shadow: 0 20px 40px rgba(5, 9, 17, 0.6);
+}
+
+.reports-card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+}
+
+.reports-card__header h2,
+.table-head h2 {
+    margin: 0;
+    color: #fff;
+}
+
+.reports-card__header p,
+.table-head p {
+    margin: 0.25rem 0 0;
+    color: var(--slate-dim);
+}
+
+.reports-export {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.reports-filters {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem 1.25rem;
+    align-items: end;
+}
+
+.reports-filters label {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.75rem;
+    color: var(--slate-dim);
+    margin-bottom: 0.35rem;
+    display: block;
+}
+
+.reports-filters input,
+.reports-filters select {
+    width: 100%;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(7, 11, 22, 0.85);
+    color: #fff;
+    padding: 0.8rem 1rem;
+    font-size: 0.95rem;
+}
+
+.reports-filters select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: linear-gradient(135deg, rgba(245, 185, 66, 0.35), rgba(76, 227, 247, 0.15));
+    background-repeat: no-repeat;
+    background-position: right 0.85rem center;
+    background-size: 0.85rem;
+    padding-right: 2.25rem;
+}
+
+.filters-actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.ghost-btn,
+.primary-btn {
+    border-radius: 999px;
+    padding: 0.45rem 1.25rem;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: transparent;
+    color: var(--slate);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.75rem;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    transition: all 200ms ease;
+}
+
+.ghost-btn:hover {
+    border-color: rgba(76, 227, 247, 0.6);
+    color: var(--accent-cyan);
+}
+
+.primary-btn {
+    border-color: rgba(245, 185, 66, 0.65);
+    background: linear-gradient(135deg, #f5b942, #f08c2d);
+    color: #0c0f1c;
+}
+
+.table-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.table-scroll {
+    overflow-x: auto;
+}
+
+.reports-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 900px;
+}
+
+.reports-table th,
+.reports-table td {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 0.9rem 0.75rem;
+    text-align: left;
+    vertical-align: top;
+}
+
+.reports-table th {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.78rem;
+    color: var(--slate-dim);
+}
+
+.reports-table td {
+    color: var(--slate);
+}
+
+.reports-table tr:hover td {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.pill {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--slate);
+}
+
+.pill-action {
+    background: rgba(76, 227, 247, 0.18);
+    color: var(--accent-cyan);
+}
+
+.payload-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.payload-list li {
+    font-size: 0.9rem;
+    color: var(--slate);
+}
+
+.muted {
+    color: var(--slate-dim);
+    font-size: 0.9rem;
+}
+
+.table-pagination {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.4rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+.page-link {
+    padding: 0.35rem 0.9rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: var(--slate);
+    text-decoration: none;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: all 150ms ease;
+}
+
+.page-link:hover {
+    border-color: rgba(245, 185, 66, 0.6);
+    color: var(--gold);
+}
+
+.page-link.active {
+    background: linear-gradient(135deg, #f5b942, #f08c2d);
+    border-color: transparent;
+    color: #0c0f1c;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 1.5rem;
+    color: var(--slate-dim);
+}
+
+@media (max-width: 900px) {
+    .reports-layout {
+        width: min(1200px, calc(100% - 2rem));
+    }
+
+    .reports-card,
+    .reports-hero {
+        padding: 1.5rem;
+    }
+
+    .reports-table {
+        min-width: 720px;
+    }
+}

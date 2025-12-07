@@ -1,0 +1,190 @@
+:root {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.permissions-layout {
+    width: min(1200px, calc(100% - 3rem));
+    margin: 2rem auto 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.permissions-hero {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    padding: 2.25rem;
+    border-radius: 28px;
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(9, 13, 25, 0.92));
+    border: 1px solid var(--border);
+    box-shadow: 0 25px 60px rgba(5, 9, 17, 0.65);
+}
+
+.permissions-hero h1 {
+    margin: 0.3rem 0 0.6rem;
+    font-size: clamp(2rem, 4vw, 2.6rem);
+    color: #fff;
+}
+
+.permissions-hero p {
+    margin: 0;
+    color: var(--slate-dim);
+    max-width: 520px;
+}
+
+.highlight-card {
+    min-width: 200px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 1.25rem;
+    text-align: center;
+}
+
+.highlight-card span {
+    display: block;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    color: var(--slate-dim);
+    text-transform: uppercase;
+}
+
+.highlight-card strong {
+    display: block;
+    margin-top: 0.35rem;
+    font-size: 2rem;
+    color: #fff;
+}
+
+.permissions-card {
+    background: var(--panel);
+    border-radius: 24px;
+    border: 1px solid var(--border);
+    padding: 2rem;
+    box-shadow: 0 20px 45px rgba(5, 9, 17, 0.6);
+}
+
+.permissions-card header {
+    margin-bottom: 1.5rem;
+}
+
+.permissions-card h2 {
+    margin: 0;
+    color: #fff;
+}
+
+.permissions-card p {
+    color: var(--slate-dim);
+    margin: 0.35rem 0 0;
+}
+
+.permission-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-group label {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.75rem;
+    color: var(--slate-dim);
+    margin-bottom: 0.35rem;
+    display: block;
+}
+
+.form-group select {
+    width: 100%;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(7, 11, 22, 0.85);
+    color: #fff;
+    padding: 0.85rem 1rem;
+}
+
+.views-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+}
+
+.view-card {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    padding: 1rem 1.2rem;
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.02);
+    cursor: pointer;
+}
+
+.view-card input {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--gold);
+}
+
+.view-card strong {
+    display: block;
+    color: #fff;
+}
+
+.view-card span {
+    font-size: 0.85rem;
+    color: var(--slate-dim);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.primary-btn {
+    border-radius: 999px;
+    padding: 0.55rem 1.5rem;
+    border: 1px solid rgba(245, 185, 66, 0.6);
+    background: linear-gradient(135deg, #f5b942, #f08c2d);
+    color: #0c0f1c;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
+.alert {
+    width: min(1200px, calc(100% - 3rem));
+    margin: 0 auto;
+    padding: 1rem 1.25rem;
+    border-radius: 16px;
+    border: 1px solid transparent;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.alert-success {
+    border-color: rgba(61, 213, 152, 0.4);
+    color: var(--accent-green);
+}
+
+.alert-error {
+    border-color: rgba(255, 107, 107, 0.4);
+    color: #ffb3b3;
+}
+
+.empty-state {
+    text-align: center;
+    color: var(--slate-dim);
+}
+
+@media (max-width: 900px) {
+    .permissions-card,
+    .permissions-hero {
+        padding: 1.5rem;
+    }
+
+    .permissions-layout {
+        width: min(1200px, calc(100% - 2rem));
+    }
+}

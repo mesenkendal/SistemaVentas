@@ -1,0 +1,3 @@
+build-essential
+libonig-dev
+zlib1g-dev

@@ -1,0 +1,41 @@
+services:
+  - type: web
+    name: sistema-ventas
+    runtime: php
+    runtimeVersion: 8.2
+    buildCommand: composer install
+    startCommand: start_php_server
+    envVars:
+      - key: APP_NAME
+        value: Sistema de Ventas
+      - key: APP_URL
+        value: /
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_TIMEZONE
+        value: America/Mexico_City
+      - key: DB_HOST
+        fromDatabase:
+          name: mysql-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: mysql-db
+          property: port
+      - key: DB_DATABASE
+        fromDatabase:
+          name: mysql-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: mysql-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: mysql-db
+          property: password
+
+  - type: mysql
+    name: mysql-db
+    version: "8.0"
+    ipAllowList: []
