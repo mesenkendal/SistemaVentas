@@ -16,8 +16,8 @@ require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/permissions.php';
 require_once __DIR__ . '/../includes/session_guard.php';
 
-$baseUrl = rtrim($config['app']['base_url'] ?? '/SistemaVentas', '/');
-$publicBase = rtrim($config['app']['public_url'] ?? $baseUrl . '/public', '/');
+$baseUrl = rtrim($config['app']['base_url'] ?? '/', '/');
+$publicBase = rtrim($config['app']['public_url'] ?? $baseUrl, '/');
 
 if (empty($_SESSION['usuario'])) {
     header('Location: ' . $publicBase . '/login.php');

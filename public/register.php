@@ -12,8 +12,8 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 }
 
 $appName = $config['app']['name'] ?? 'Sistema de Ventas';
-$baseUrl = rtrim($config['app']['base_url'] ?? '/SistemaVentas', '/');
-$publicBase = rtrim($config['app']['public_url'] ?? $baseUrl . '/public', '/');
+$baseUrl = rtrim($config['app']['base_url'] ?? '/', '/');
+$publicBase = rtrim($config['app']['public_url'] ?? $baseUrl, '/');
 $asset = static fn(string $path): string => 'assets/' . ltrim($path, '/');
 
 $roleModel = new RoleModel();
