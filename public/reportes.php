@@ -242,7 +242,7 @@ $decodePayload = static function (?string $json): array {
                             <?php
                                 $dt = new DateTime($entry['FechaEvento'], new DateTimeZone('UTC')); 
                                 $dt->setTimezone(new DateTimeZone('America/Costa_Rica'));
-                                $fecha = $dt->format('d/m/Y H:i:s');
+                                $fecha = $dt->format('d/m/Y H:i:s');                                
                                 $tabla = (string) $entry['Tabla'];
                                 $accion = (string) $entry['Accion'];
                                 $registro = (string) $entry['RegistroId'];
