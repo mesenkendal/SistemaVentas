@@ -471,7 +471,7 @@ foreach ($formDetails as $detail) {
                                     <td class="text-right">$<?= number_format($total, 2); ?></td>
                                     <td>
                                         <div class="action-buttons">
-                                            
+                                            <button type= "button" class= "ghost-btn" data-sale-view-data-sale-id="<?= $saleId; ?>">ver</button>
                                             <button type="button" class="danger-btn" data-sale-delete data-sale-id="<?= $saleId; ?>">Eliminar</button>
                                         </div>
                                     </td>
