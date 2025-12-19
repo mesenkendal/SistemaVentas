@@ -118,7 +118,7 @@ $navItems = filtered_nav_items($publicBase);
     <main>
     
         <section class="hero">
-            <h1>Hola, <?= e($user['apellido']); ?>. Monitorea el pulso del negocio.</h1>
+            <h1>Hola, <?= e($user['username']); ?>. Monitorea el pulso del negocio.</h1>
             <p>Síntesis operativa de inventario, ventas y colaboradores activos.</p>
             <div class="stats-grid">
                 <div class="card">
