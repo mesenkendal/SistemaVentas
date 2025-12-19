@@ -118,7 +118,7 @@ $navItems = filtered_nav_items($publicBase);
     <main>
     
         <section class="hero">
-            <h1>Bienvenido de nuevo, <?= e($user['username']); ?> Hoy es Sábado, 20 de Diciembre de 2025.</h1>
+            <h1>Bienvenido de nuevo <?= e($user['username']); ?> , Hoy es Sábado 20 de Diciembre de 2025.</h1>
             <p>Síntesis operativa de inventario, ventas y colaboradores activos.</p>
             <div class="stats-grid">
                 <div class="card">
