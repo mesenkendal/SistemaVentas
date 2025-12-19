@@ -240,7 +240,7 @@ $decodePayload = static function (?string $json): array {
                     <tbody>
                         <?php foreach ($entries as $entry): ?>
                             <?php
-                                $dt = new DateTime($entry['FechaEvento']);
+                                $dt = new DateTime($entry['FechaEvento'], new DateTimeZone('UTC')); 
                                 $dt->setTimezone(new DateTimeZone('America/Costa_Rica'));
                                 $fecha = $dt->format('d/m/Y H:i:s');
                                 $tabla = (string) $entry['Tabla'];
