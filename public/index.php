@@ -128,7 +128,7 @@ $navItems = filtered_nav_items($publicBase);
                 </div>
                 <div class="card">
                     <h3>Facturación</h3>
-                    <strong>$<?= number_format($stats['ventasMonto'], 2); ?></strong>
+                    <strong>₡<?= number_format($stats['ventasMonto'], 2); ?></strong>
                     <span>Total acumulado</span>
                 </div>
                 <div class="card">
@@ -138,7 +138,7 @@ $navItems = filtered_nav_items($publicBase);
                 </div>
                 <div class="card">
                     <h3>Valor inventario</h3>
-                    <strong>$<?= number_format($stats['stockValor'], 2); ?></strong>
+                    <strong>₡<?= number_format($stats['stockValor'], 2); ?></strong>
                     <span>Precio x stock</span>
                 </div>
             </div>
