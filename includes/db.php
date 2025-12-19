@@ -10,10 +10,11 @@ if (!function_exists('db')) {
     /**
      * Devuelve la conexion PDO reutilizable.
      */
-    function db(): \PDO
-    {
-        return Connection::getInstance();
-    }
+ function db(): \PDO
+{
+    $pdo = Connection::getInstance(); 
+    $pdo->exec("SET time_zone = '-06:00';"); 
+    return $pdo;
 }
 
 if (!function_exists('run_query')) {
