@@ -123,8 +123,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             try {
                 if ($action === 'create') {
-                    $inventoryModel->create($payload, $currentUserId);
-                    $_SESSION['flash_success'] = 'Material agregado al inventario.';
+                    
+                    $existe = false;
+                    foreach ($items as $itemExistente) {
+                        if (strcasecmp(trim($itemExistente['Nombre']), $formValues['Nombre']) === 0) {
+                            $existe = true;
+                            break;
+                        }
+                    }
+
+                    if ($existe) {
+                        $_SESSION['flash_error'] = 'Error: El producto "' . $formValues['Nombre'] . '" ya existe en el inventario.';
+                    } else {
+                        $inventoryModel->create($payload, $currentUserId);
+                        $_SESSION['flash_success'] = 'Material agregado al inventario.';
+                    }
+                    // ---------------------------------------
                 } else {
                     $affected = $inventoryModel->update((int) $editingId, $payload, $currentUserId);
                     $_SESSION['flash_success'] = $affected > 0
@@ -132,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         : 'No hubo cambios para guardar.';
                 }
             } catch (\Throwable $th) {
-                $_SESSION['flash_error'] = 'No fue posible guardar el material. Intenta nuevamente.';
+                $_SESSION['flash_error'] = 'No fue posible guardar el producto. Intenta nuevamente.';
             }
 
             header('Location: ' . $redirectUrl);
