@@ -472,7 +472,7 @@ foreach ($formDetails as $detail) {
                                     <td>
                                         <div class="action-buttons">
                                             <button type="button" class="ghost-btn" data-sale-view data-sale-id="<?= $saleId; ?>">Ver</button>
-                                            <a class="ghost-btn" href="<?= e($saleEditLink); ?>"></a>
+                                            <a class="" href="<?= e($saleEditLink); ?>"></a>
                                             <button type="button" class="danger-btn" data-sale-delete data-sale-id="<?= $saleId; ?>">Eliminar</button>
                                         </div>
                                     </td>
