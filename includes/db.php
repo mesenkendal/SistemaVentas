@@ -43,3 +43,4 @@ if (!function_exists('execute_non_query')) {
         return $stmt->rowCount();
     }
 }
+}
