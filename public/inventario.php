@@ -421,7 +421,7 @@ $pagedItems = $totalItems > 0 ? array_slice($items, $inventoryOffset, $inventory
                         <a href="<?= e($redirectUrl); ?>">Cancelar</a>
                     </div>
                 <?php endif; ?>
-                <h2><?= $mode === 'update' ? 'Actualizar material' : 'Registrar material'; ?></h2>
+                <h2><?= $mode === 'update' ? 'Actualizar material' : 'Registrar Producto'; ?></h2>
                 <p><?= $mode === 'update' ? 'Modifica los campos requeridos y guarda los cambios.' : 'Completa el formulario para agregar un nuevo insumo.'; ?></p>
                 <form method="post" class="inventory-form" action="<?= e($formActionUrl); ?>">
                     <input type="hidden" name="action" value="<?= $mode === 'update' ? 'update' : 'create'; ?>">
