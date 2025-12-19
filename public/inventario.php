@@ -450,7 +450,7 @@ $pagedItems = $totalItems > 0 ? array_slice($items, $inventoryOffset, $inventory
                         </div>
                     </div>
                     <button type="submit" class="primary-btn">
-                        <?= $mode === 'update' ? 'Guardar cambios' : 'Agregar material'; ?>
+                        <?= $mode === 'update' ? 'Guardar cambios' : 'Agregar Productos'; ?>
                     </button>
                 </form>
             </section>
