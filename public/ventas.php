@@ -551,7 +551,7 @@ foreach ($formDetails as $detail) {
                         <?php endforeach; ?>
                     </div>
                     <div class="detail-actions">
-                        <button type="button" class="ghost-btn" data-add-detail>Agregar concepto</button>
+                        <button type="button" class="ghost-btn" data-add-detail>Agregar Producto</button>
                     </div>
 
                     <div class="form-summary">
