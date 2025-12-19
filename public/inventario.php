@@ -265,7 +265,7 @@ $pagedItems = $totalItems > 0 ? array_slice($items, $inventoryOffset, $inventory
                     </div>
                     <div>
                         <span>Valor estimado</span>
-                        <strong>$<?= number_format($totalValue, 2); ?></strong>
+                        <strong>₡<?= number_format($totalValue, 2); ?></strong>
                     </div>
                     <div>
                         <span>Stock acumulado</span>
@@ -310,7 +310,7 @@ $pagedItems = $totalItems > 0 ? array_slice($items, $inventoryOffset, $inventory
             <section class="inventory-table-card">
                 <header class="table-head">
                     <div>
-                        <h2>Materiales activos</h2>
+                        <h2>Productos activos</h2>
                         <p><?= number_format($totalItems); ?> registros disponibles para operar.</p>
                     </div>
                     <div class="filter-bar">
@@ -356,7 +356,7 @@ $pagedItems = $totalItems > 0 ? array_slice($items, $inventoryOffset, $inventory
                                         <?php endif; ?>
                                     </td>
                                     <td><span class="pill"><?= e($tipo); ?></span></td>
-                                    <td>$<?= number_format($precio, 2); ?></td>
+                                    <td>₡<?= number_format($precio, 2); ?></td>
                                     <td><?= number_format($stock, 2); ?></td>
                                     <td><?= e($fechaFormato); ?></td>
                                     <td>
