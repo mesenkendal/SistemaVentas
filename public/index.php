@@ -25,7 +25,7 @@ enforce_session_timeout($publicBase);
 
 ensure_access('index.php', $publicBase);
 
-$appName = $config['app']['name'] ?? 'Sistema de Ventas';
+$appName = $config['app']['name'] ?? 'SIFVER';
 $asset = static fn(string $path): string => 'assets/' . ltrim($path, '/');
 
 function metric(string $sql): float
