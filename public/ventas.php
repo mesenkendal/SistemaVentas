@@ -557,7 +557,7 @@ foreach ($formDetails as $detail) {
                     <div class="form-summary">
                         <div>
                             <span>Total estimado</span>
-                            <strong id="sales-total-display">₡<?= number_format($formTotalDisplay, 2); ?></strong>
+                            <strong id="sales-total-display">₡ <?= number_format($formTotalDisplay, 2); ?></strong>
                         </div>
                         <small>El total se recalcula automáticamente según los conceptos.</small>
                     </div>
