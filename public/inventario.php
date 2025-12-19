@@ -429,7 +429,7 @@ $pagedItems = $totalItems > 0 ? array_slice($items, $inventoryOffset, $inventory
                         <input type="hidden" name="codigo" value="<?= (int) $editingId; ?>">
                     <?php endif; ?>
                     <div class="form-group">
-                        <label for="nombre">Nombre del material</label>
+                        <label for="nombre">Nombre del producto</label>
                         <input type="text" id="nombre" name="nombre" maxlength="100" required value="<?= e($formValues['Nombre']); ?>">
                     </div>
                     <div class="form-group">
