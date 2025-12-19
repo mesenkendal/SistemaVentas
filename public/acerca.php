@@ -25,7 +25,7 @@ enforce_session_timeout($publicBase);
 ensure_access('acerca.php', $publicBase);
 
 $user = $_SESSION['usuario'];
-$appName = $config['app']['name'] ?? 'Sistema de Ventas';
+$appName = $config['app']['name'] ?? 'Sistema de Ventas.';
 $asset = static fn(string $path): string => 'assets/' . ltrim($path, '/');
 $navItems = filtered_nav_items($publicBase);
 
