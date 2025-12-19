@@ -180,7 +180,7 @@ $navItems = filtered_nav_items($publicBase);
                                 <strong><?= e($item['Nombre']); ?></strong>
                                 <div>Stock: <?= number_format((float) $item['Stock'], 2); ?></div>
                             </div>
-                            <span class="badge badge-warning">$<?= number_format((float) $item['Precio'], 2); ?></span>
+                            <span class="badge badge-warning">₡<?= number_format((float) $item['Precio'], 2); ?></span>
                         </div>
                     <?php endforeach; ?>
                     <?php if (empty($inventoryAlerts)): ?>
