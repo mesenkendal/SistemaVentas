@@ -121,12 +121,11 @@ $decodePayload = static function (?string $json): array {
 <body>
     <nav class="navbar">
         <a class="navbar-brand" href="<?= e($publicBase); ?>/index.php">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-    <?php require __DIR__ . '/../includes/footer.php'; ?>
-                <path d="M3 12 2 7l10-5 10 5-1 5-9 10z" />
-            </svg>
-            <?= e($appName); ?>
-        </a>
+    <svg viewBox="0 0 24 24" aria-hidden="true" width="24" height="24">
+        <path fill="currentColor" d="M3 12 2 7l10-5 10 5-1 5-9 10z" />
+    </svg>
+    <?= e($appName); ?>
+</a>
         <div class="nav-links">
             <?php foreach ($navItems as $item): ?>
                 <a<?= $item['active'] ? ' class="active"' : ''; ?> href="<?= e($item['url']); ?>">
