@@ -221,7 +221,14 @@ if (!empty($roleDistribution)) {
     $roleLeader = array_key_first($roleDistribution) ?? $roleLeader;
 }
 
-$lastJoinText = $latestJoinTs ? date('d/m/Y H:i', $latestJoinTs) : 'Sin registro';
+if ($latestJoinTs) {
+    // Usamos DateTime para convertir el tiempo UTC del servidor a Costa Rica
+    $dtJoin = new DateTime('@' . $latestJoinTs); 
+    $dtJoin->setTimezone(new DateTimeZone('America/Costa_Rica'));
+    $lastJoinText = $dtJoin->format('d/m/Y H:i');
+} else {
+    $lastJoinText = 'Sin registro';
+}
 $emptyFilterId = 'users-empty-filter';
 
 $usersPerPage = 10;
@@ -357,7 +364,9 @@ $pagedUsers = $activeCount > 0 ? array_slice($activeUsers, $offset, $usersPerPag
                                     $apellido = (string) $member['Apellido'];
                                     $rolNombre = (string) $member['NombreRol'];
                                     $fechaCreacion = (string) $member['FechaCreacion'];
-                                    $fechaFormateada = date('d/m/Y H:i', strtotime($fechaCreacion));
+                                    $dtRow = new DateTime($fechaCreacion, new DateTimeZone('UTC'));
+                                    $dtRow->setTimezone(new DateTimeZone('America/Costa_Rica'));
+                                    $fechaFormateada = $dtRow->format('d/m/Y H:i');
                                     $searchIndex = strtolower($nombre . ' ' . $apellido . ' ' . $rolNombre . ' #' . $userId);
                                     $editParams = $currentQuery;
                                     $editParams['edit'] = $userId;
