@@ -380,11 +380,11 @@ foreach ($formDetails as $detail) {
                     </div>
                     <div>
                         <span>Facturación acumulada</span>
-                        <strong>$<?= number_format($totalAmount, 2); ?></strong>
+                        <strong>₡<?= number_format($totalAmount, 2); ?></strong>
                     </div>
                     <div>
                         <span>Ticket promedio</span>
-                        <strong>$<?= number_format($averageTicket, 2); ?></strong>
+                        <strong>₡<?= number_format($averageTicket, 2); ?></strong>
                     </div>
                     <div>
                         <span>Ventas hoy</span>
@@ -468,7 +468,7 @@ foreach ($formDetails as $detail) {
                                         <strong><?= e($cliente ?: 'Sin cliente'); ?></strong>
                                     </td>
                                     <td><?= e($usuarioVenta); ?></td>
-                                    <td class="text-right">$<?= number_format($total, 2); ?></td>
+                                    <td class="text-right">₡<?= number_format($total, 2); ?></td>
                                     <td>
                                         <div class="action-buttons">
                                             <button type="button" class="ghost-btn" data-sale-view data-sale-id="<?= $saleId; ?>">Ver</button>
