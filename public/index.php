@@ -159,7 +159,7 @@ $navItems = filtered_nav_items($publicBase);
                                 <div><?= e($venta['Cliente'] ?: 'Sin cliente'); ?></div>
                                 <small><?= e($venta['Fecha']); ?> · <?= e($venta['NombreUsuario']); ?></small>
                             </div>
-                            <span class="badge badge-success">$<?= number_format((float) $venta['Total'], 2); ?></span>
+                            <span class="badge badge-success">₡<?= number_format((float) $venta['Total'], 2); ?></span>
                         </div>
                     <?php endforeach; ?>
                     <?php if (empty($recentSales)): ?>
