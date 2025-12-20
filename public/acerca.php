@@ -105,7 +105,7 @@ $reportes = [
     'Los datos incluyen ventas, inventario y bitácora según la vista usada.',
 ];
 
-$pdfPath = 'uploads/manual_usuario.pdf';
+$pdfPath = 'uploads/manual.pdf.pdf';
 
 ?>
 <!DOCTYPE html>
