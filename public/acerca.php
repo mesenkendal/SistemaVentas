@@ -265,34 +265,7 @@ $pdfPath = 'uploads/manual.pdf.pdf';
         </section>
 
        
-    <?php 
-// --- CONFIGURACIÓN DEL NOMBRE DEL ARCHIVO ---
-// 1. Asegúrate de que el nombre aquí sea IGUAL al que subiste a GitHub
-$nombreRealDelArchivo = 'manualU.pdf'; 
-$pdfPath = 'uploads/' . $nombreRealDelArchivo; 
-?>
-
-<section class="panel" style="margin-top: 20px;">
-    <div class="panel-head">
-        <h4>Documentación del Sistema</h4>
-        <span>Manual de usuario</span>
-    </div>
-    
-    <div style="padding: 20px; text-align: center;">
-        <?php if (file_exists($pdfPath)): ?>
-            <p style="margin-bottom: 15px;">El manual está listo para ser consultado:</p>
-            <a href="<?= e($pdfPath); ?>" target="_blank" class="primary-btn" style="text-decoration: none; padding: 12px 25px;">
-                📄 Abrir Manual (<?= e($nombreRealDelArchivo); ?>)
-            </a>
-        <?php else: ?>
-            <div style="background: #fff5f5; border: 1px solid #feb2b2; color: #c53030; padding: 15px; border-radius: 8px;">
-                <strong>⚠️ Archivo no detectado</strong><br>
-                El sistema busca el archivo en: <code>/uploads/<?= e($nombreRealDelArchivo); ?></code><br>
-                <small>Verifica que el nombre en GitHub no tenga mayúsculas diferentes.</small>
-            </div>
-        <?php endif; ?>
-    </div>
-</section>
+  
 
     </main>
     <?php require __DIR__ . '/../includes/footer.php'; ?>
