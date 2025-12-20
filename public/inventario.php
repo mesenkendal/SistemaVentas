@@ -130,37 +130,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ];
 
       try {
+            // --- NUEVA VALIDACIÓN DE DUPLICADOS ---
             if ($action === 'create') {
-                // 1. Obtenemos los productos actualizados directamente del modelo
-                $todosLosProductos = $inventoryModel->all();
-                
-                // 2. Limpiamos el nombre que el usuario intenta ingresar
-                $nombreNuevo = strtolower(trim($formValues['Nombre']));
-
-                foreach ($todosLosProductos as $item) {
-                    // 3. Limpiamos el nombre del producto existente en la base de datos
-                    $nombreExistente = strtolower(trim((string)$item['Nombre']));
-
-                    if ($nombreNuevo === $nombreExistente) {
-                        $_SESSION['flash_error'] = 'Error: El producto "' . e($formValues['Nombre']) . '" ya existe.';
+                $items = $inventoryModel->all(); // Obtenemos la lista actual para comparar
+                foreach ($items as $item) {
+                    if (strcasecmp(trim((string)$item['Nombre']), $formValues['Nombre']) === 0) {
+                        $_SESSION['flash_error'] = 'El producto "' . e($formValues['Nombre']) . '" ya existe en el inventario.';
                         header('Location: ' . $redirectUrl);
                         exit;
                     }
                 }
             }
+            // ---------------------------------------
 
-            // Si pasó la validación o es un 'update', procedemos:
             if ($action === 'create') {
                 $inventoryModel->create($payload, $currentUserId);
-                $_SESSION['flash_success'] = 'Material agregado al inventario.';
+                $_SESSION['flash_success'] = 'producto agregado al inventario.';
             } else {
-                $editingId = filter_input(INPUT_POST, 'codigo', FILTER_VALIDATE_INT);
                 $affected = $inventoryModel->update((int) $editingId, $payload, $currentUserId);
                 $_SESSION['flash_success'] = $affected > 0
-                    ? 'Material actualizado correctamente.'
+                    ? 'Producto actualizado correctamente.'
                     : 'No hubo cambios para guardar.';
             }
-        } catch (\Throwable $th) {
+        } catch (\Throwable $th {
             $_SESSION['flash_error'] = 'Error en el sistema: ' . $th->getMessage();
             header('Location: ' . $redirectUrl);
             exit;
