@@ -312,7 +312,7 @@ $pagedItems = $totalItems > 0 ? array_slice($items, $inventoryOffset, $inventory
             <section class="inventory-table-card">
                 <header class="table-head">
                     <div>
-                        <h2>Materiales activos</h2>
+                        <h2>Productos activos</h2>
                         <p><?= number_format($totalItems); ?> registros disponibles para operar.</p>
                     </div>
                     <div class="filter-bar">
@@ -389,7 +389,7 @@ $pagedItems = $totalItems > 0 ? array_slice($items, $inventoryOffset, $inventory
                             <?php if (empty($pagedItems)): ?>
                                 <tr>
                                     <td colspan="7" class="empty-state">
-                                        No hay materiales activos registrados.
+                                        No hay productos activos registrados.
                                     </td>
                                 </tr>
                             <?php endif; ?>
