@@ -83,25 +83,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $nameLength = function_exists('mb_strlen') ? mb_strlen($formValues['Nombre']) : strlen($formValues['Nombre']);
 
-      // 1. Validamos que no esté vacío o sea muy largo
+        // 1. Validaciones de formato
         if ($formValues['Nombre'] === '') {
             $formErrors[] = 'El nombre del material es obligatorio.';
         } elseif ($nameLength > 100) {
             $formErrors[] = 'El nombre supera el límite permitido (100 caracteres).';
         } else {
-            // 2. BUSCAMOS DUPLICADOS (Aquí está el truco)
-            $itemsExistentes = $inventoryModel->all(); 
+            // 2. VALIDACIÓN DE DUPLICADOS
+            $itemsExistentes = $inventoryModel->all(); // [cite: 48]
             foreach ($itemsExistentes as $item) {
-                // Comparamos el nombre que escribiste con los que ya existen en la base de datos
+                // Comparamos nombres ignorando mayúsculas y espacios
                 if (strcasecmp(trim((string)$item['Nombre']), $formValues['Nombre']) === 0) {
-                    
-                    // Si estás creando uno nuevo
                     if ($action === 'create') {
                         $formErrors[] = 'Ya existe un material con el nombre "' . e($formValues['Nombre']) . '".';
                         break;
                     }
-                    
-                    // Si estás editando uno existente (comprobamos que no sea el mismo ID)
                     if ($action === 'update' && (int)$item['CodigoProducto'] !== (int)$editingId) {
                         $formErrors[] = 'El nombre "' . e($formValues['Nombre']) . '" ya lo tiene otro producto.';
                         break;
@@ -110,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        // 3. Validaciones de los otros campos
+        // 3. Validaciones de otros campos [cite: 22, 23, 24]
         if (!in_array($formValues['TipoVenta'], ['Kilo', 'Unidad'], true)) {
             $formErrors[] = 'Selecciona un tipo de venta válido.';
         }
@@ -121,8 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $formErrors[] = 'Ingresa un stock válido.';
         }
 
-        // --- EL CAMBIO MÁS IMPORTANTE ESTÁ AQUÍ ---
-        // Solo si NO hay errores en el arreglo $formErrors, procedemos a guardar
+        // 4. EL CAMBIO VITAL: Solo guardar si NO hay errores 
         if (empty($formErrors)) {
             $payload = [
                 'Nombre'    => $formValues['Nombre'],
@@ -133,21 +128,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             try {
                 if ($action === 'create') {
-                    $inventoryModel->create($payload, $currentUserId);
+                    $inventoryModel->create($payload, $currentUserId); // 
                     $_SESSION['flash_success'] = 'Material agregado.';
                 } else {
-                    $inventoryModel->update((int) $editingId, $payload, $currentUserId);
+                    $inventoryModel->update((int) $editingId, $payload, $currentUserId); // [cite: 31]
                     $_SESSION['flash_success'] = 'Material actualizado.';
                 }
-                header('Location: ' . $redirectUrl);
+                header('Location: ' . $redirectUrl); // [cite: 34]
                 exit;
             } catch (\Throwable $th) {
-                $_SESSION['flash_error'] = 'Error al guardar en la base de datos.';
+                $_SESSION['flash_error'] = 'Error al guardar en la base de datos.'; // [cite: 34]
             }
-        } 
-        // Si hay errores, el código simplemente NO entra al "if" de arriba 
-        // y muestra los mensajes rojos que ya tienes configurados.
-    }
+        }
 }
 
         if (!in_array($formValues['TipoVenta'], ['Kilo', 'Unidad'], true)) {
