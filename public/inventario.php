@@ -259,7 +259,7 @@ $pagedItems = $totalItems > 0 ? array_slice($items, $inventoryOffset, $inventory
             <div>
                 <p class="eyebrow">Control de materiales</p>
                 <h1>Inventario operativo</h1>
-                <p>Gestiona altas, actualizaciones y bajas lógicas de tus recursos. Último ajuste: <?= e($lastUpdatedText); ?>.</p>
+                <p>Gestiona altas, actualizaciones y bajas lógicas de tus recursos. Último ajuste: <?= (new DateTime('now', new DateTimeZone('America/Costa_Rica')))->format('d/m/Y g:i A'); ?>.</p>
                 <div class="inventory-stats">
                     <div>
                         <span>Total SKU</span>
