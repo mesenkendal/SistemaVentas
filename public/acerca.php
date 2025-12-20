@@ -160,10 +160,7 @@ $reportes = [
                     <span class="badge badge-warning">Permisos</span>
                     <span class="badge badge-accent">Reportes</span>
 
-                     <section class="panel" style="text-align: center; padding: 40px;">
-    <div class="panel-head" style="justify-content: center;">
-        <h4>Manual de Usuario</h4>
-    </div>
+                   
     
 
                 </div>
