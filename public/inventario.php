@@ -340,8 +340,7 @@ $pagedItems = $totalItems > 0 ? array_slice($items, $inventoryOffset, $inventory
                                     $tipo = (string) $item['TipoVenta'];
                                     $precio = (float) $item['Precio'];
                                     $stock = (float) $item['Stock'];
-                                    $fecha = (string) $item['FechaActualiza'];
-                                    $rowIndex = strtolower($nombre . ' ' . $tipo);
+                                    $fecha = (new DateTime($item['FechaActualiza'], new DateTimeZone('UTC')))->setTimezone(new DateTimeZone('America/Costa_Rica'))->format('d/m/Y g:i A');                                    $rowIndex = strtolower($nombre . ' ' . $tipo);
                                     $isLow = $stock <= 5;
                                     $fechaTimestamp = strtotime($fecha);
                                     $fechaFormato = $fechaTimestamp ? date('d/m/Y H:i', $fechaTimestamp) : 'Sin registro';
