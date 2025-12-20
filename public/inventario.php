@@ -138,7 +138,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Ahora sí, si sigue vacío, procedemos a guardar
     if (empty($formErrors)) {
 
-        if (empty($formErrors)) {
+        
             $payload = [
                 'Nombre'    => $formValues['Nombre'],
                 'TipoVenta' => $formValues['TipoVenta'],
