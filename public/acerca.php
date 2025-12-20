@@ -105,7 +105,7 @@ $reportes = [
     'Los datos incluyen ventas, inventario y bitácora según la vista usada.',
 ];
 
-$pdfPath = 'uploads/manual.pdf.pdf';
+
 
 ?>
 <!DOCTYPE html>
@@ -263,10 +263,6 @@ $pdfPath = 'uploads/manual.pdf.pdf';
                 </div>
             </div>
         </section>
-
-       
-  
-
     </main>
     <?php require __DIR__ . '/../includes/footer.php'; ?>
 </body>
