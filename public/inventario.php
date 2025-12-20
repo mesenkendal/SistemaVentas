@@ -101,6 +101,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $formErrors[] = 'Ingresa un stock válido (mayor o igual a 0).';
         }
 
+        // --- VALIDACIÓN DE NOMBRE DUPLICADO ---
+        if ($action === 'create' && empty($formErrors)) {
+            // Obtenemos todos los productos actuales de la base de datos
+            $itemsExistentes = $inventoryModel->all(); 
+            
+            foreach ($itemsExistentes as $item) {
+                // Comparamos el nombre guardado con el que el usuario escribió
+                // trim() quita espacios y strcasecmp() ignora mayúsculas/minúsculas
+                if (strcasecmp(trim((string)$item['Nombre']), trim($formValues['Nombre'])) === 0) {
+                    $formErrors[] = 'Ya existe un producto con el nombre: ' . e($formValues['Nombre']);
+                    break;
+                }
+            }
+        }
+        // --- FIN DE LA VALIDACIÓN ---
+        
         if ($action === 'update') {
             $mode = 'update';
             $editingId = filter_input(
