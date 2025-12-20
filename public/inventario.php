@@ -101,7 +101,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $formErrors[] = 'Ingresa un stock válido (mayor o igual a 0).';
         }
 
-     
         
         if ($action === 'update') {
             $mode = 'update';
@@ -342,10 +341,11 @@ $pagedItems = $totalItems > 0 ? array_slice($items, $inventoryOffset, $inventory
                                     $tipo = (string) $item['TipoVenta'];
                                     $precio = (float) $item['Precio'];
                                     $stock = (float) $item['Stock'];
-                                    $fecha = (new DateTime($item['FechaActualiza'], new DateTimeZone('UTC')))->setTimezone(new DateTimeZone('America/Costa_Rica'))->format('d/m/Y g:i A');                                    $rowIndex = strtolower($nombre . ' ' . $tipo);
+                                    $fecha = (string) $item['FechaActualiza'];
+                                    $rowIndex = strtolower($nombre . ' ' . $tipo);
                                     $isLow = $stock <= 5;
-                                    //$fechaTimestamp = strtotime($fecha);
-                                    //$fechaFormato = $fechaTimestamp ? date('d/m/Y H:i', $fechaTimestamp) : 'Sin registro';
+                                    $fechaTimestamp = strtotime($fecha);
+                                    $fechaFormato = $fechaTimestamp ? date('d/m/Y H:i', $fechaTimestamp) : 'Sin registro';
                                     $editParams = $currentQueryParams;
                                     $editParams['edit'] = $codigo;
                                     $editLink = $inventoryBaseUrl . ($editParams ? '?' . http_build_query($editParams) : '');
@@ -361,7 +361,7 @@ $pagedItems = $totalItems > 0 ? array_slice($items, $inventoryOffset, $inventory
                                     <td><span class="pill"><?= e($tipo); ?></span></td>
                                     <td>₡<?= number_format($precio, 2); ?></td>
                                     <td><?= number_format($stock, 2); ?></td>
-                                    <td><?= e($fecha); ?></td>
+                                    <td><?= e($fechaFormato); ?></td>
                                     <td>
                                         <div class="action-buttons">
                                             <button type="button"
