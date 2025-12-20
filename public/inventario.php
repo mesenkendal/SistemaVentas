@@ -89,21 +89,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } elseif ($nameLength > 100) {
             $formErrors[] = 'El nombre supera el límite permitido (100 caracteres).';
         } else {
-            // 2. VALIDACIÓN DE DUPLICADOS
-            $itemsExistentes = $inventoryModel->all(); // [cite: 48]
+            // 2. VALIDACIÓN DE DUPLICADOS (Versión Robusta)
+            $itemsExistentes = $inventoryModel->all(); 
+            $nombreNuevoLimpio = mb_strtolower(trim($formValues['Nombre']));
+
             foreach ($itemsExistentes as $item) {
-                // Comparamos nombres ignorando mayúsculas y espacios
-                if (strcasecmp(trim((string)$item['Nombre']), $formValues['Nombre']) === 0) {
-                    if ($action === 'create') {
-                        $formErrors[] = 'Ya existe un material con el nombre "' . e($formValues['Nombre']) . '".';
-                        break;
-                    }
-                    if ($action === 'update' && (int)$item['CodigoProducto'] !== (int)$editingId) {
-                        $formErrors[] = 'El nombre "' . e($formValues['Nombre']) . '" ya lo tiene otro producto.';
-                        break;
+                // Verificamos si la columna es 'Nombre' o 'nombre' por si acaso
+                $nombreDBRaw = $item['Nombre'] ?? $item['nombre'] ?? null;
+                
+                if ($nombreDBRaw !== null) {
+                    $nombreDBLimpio = mb_strtolower(trim((string)$nombreDBRaw));
+
+                    if ($nombreDBLimpio === $nombreNuevoLimpio) {
+                        // Si es creación, cualquier coincidencia es error
+                        if ($action === 'create') {
+                            $formErrors[] = 'Ya existe un material con el nombre "' . e($formValues['Nombre']) . '".';
+                            break;
+                        }
+                        
+                        // Si es actualización, validamos que el CódigoProducto sea el mismo
+                        // Nota: Verifica si tu columna de ID se llama 'CodigoProducto' o 'id'
+                        $idDB = $item['CodigoProducto'] ?? $item['id'] ?? 0;
+                        if ($action === 'update' && (int)$idDB !== (int)$editingId) {
+                            $formErrors[] = 'El nombre "' . e($formValues['Nombre']) . '" ya lo tiene otro producto.';
+                            break;
+                        }
                     }
                 }
             }
+            
         }
 
         // 3. Validaciones de otros campos [cite: 22, 23, 24]
@@ -140,8 +154,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['flash_error'] = 'Error al guardar en la base de datos.'; // [cite: 34]
             }
         }
+   }
 }
-
         if (!in_array($formValues['TipoVenta'], ['Kilo', 'Unidad'], true)) {
             $formErrors[] = 'Selecciona un tipo de venta válido.';
         }
