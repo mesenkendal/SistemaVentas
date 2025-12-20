@@ -121,6 +121,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
+
+        // --- VALIDACIÓN DE DUPLICADOS REFORZADA ---
+    if ($action === 'create' && empty($formErrors)) {
+        $nombreNuevo = trim($_POST['Nombre'] ?? '');
+        $todosLosItems = $inventoryModel->all(); 
+        
+        foreach ($todosLosItems as $item) {
+            if (isset($item['Nombre']) && strcasecmp(trim((string)$item['Nombre']), $nombreNuevo) === 0) {
+                $formErrors[] = "Error: El producto '$nombreNuevo' ya existe.";
+                break;
+            }
+        }
+    }
+
+    // Ahora sí, si sigue vacío, procedemos a guardar
+    if (empty($formErrors)) {
+
         if (empty($formErrors)) {
             $payload = [
                 'Nombre'    => $formValues['Nombre'],
