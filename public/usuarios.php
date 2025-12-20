@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+date_default_timezone_set('America/Costa_Rica');
+
 use SistemaVentas\Models\RoleModel;
 use SistemaVentas\Models\UserModel;
 use function htmlspecialchars as e;
@@ -280,7 +282,7 @@ $pagedUsers = $activeCount > 0 ? array_slice($activeUsers, $offset, $usersPerPag
             <div>
                 <p class="eyebrow">Directorio interno</p>
                 <h1>Gestión de usuarios</h1>
-                <p>Controla accesos, roles y altas recientes. Último registro: <?= e($lastJoinText); ?>.</p>
+                <p>Controla accesos, roles y altas recientes. Último registro: <?= (new DateTime('now', new DateTimeZone('America/Costa_Rica')))->format('d/m/Y g:i A'); ?>.</p>
                 <div class="inventory-stats">
                     <div>
                         <span>Usuarios activos</span>
