@@ -348,7 +348,7 @@ $pagedItems = $totalItems > 0 ? array_slice($items, $inventoryOffset, $inventory
                                     $tipo = (string) $item['TipoVenta'];
                                     $precio = (float) $item['Precio'];
                                     $stock = (float) $item['Stock'];
-                                    $fecha = date('d/m/Y H:i', strtotime($item['FechaActualiza'] . ' -6 hours'));
+                                    $fecha = date('d/m/Y H:i', strtotime($item['FechaActualiza'] . ' -6 hours +10 minutes''));
                                     $rowIndex = strtolower($nombre . ' ' . $tipo);
                                     $isLow = $stock <= 5;
                                     //$fechaTimestamp = strtotime($fecha);
