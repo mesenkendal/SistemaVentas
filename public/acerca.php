@@ -105,6 +105,8 @@ $reportes = [
     'Los datos incluyen ventas, inventario y bitácora según la vista usada.',
 ];
 
+$pdfPath = 'uploads/manual_usuario.pdf';
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -157,6 +159,9 @@ $reportes = [
                     <span class="badge badge-success">Operación diaria</span>
                     <span class="badge badge-warning">Permisos</span>
                     <span class="badge badge-accent">Reportes</span>
+
+                    
+
                 </div>
             </div>
             <div class="callout">
@@ -254,6 +259,33 @@ $reportes = [
                 </div>
             </div>
         </section>
+
+        <section class="panel" style="text-align: center; padding: 40px;">
+    <div class="panel-head" style="justify-content: center;">
+        <h4>Manual de Usuario</h4>
+    </div>
+    
+    <?php if (file_exists($pdfPath)): ?>
+        <a href="<?= e($pdfPath); ?>" target="_blank" style="text-decoration: none; display: inline-block;">
+            <div style="background: #f0fdf4; border: 2px dashed #22c55e; padding: 30px; border-radius: 12px; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+                <p style="margin-top: 15px; font-weight: 600; color: #166534;">Ver Documento de Ayuda</p>
+                <span style="font-size: 0.8rem; color: #15803d;">(Se abrirá en una pestaña nueva)</span>
+            </div>
+        </a>
+    <?php else: ?>
+        <div class="info-box">
+            <p>El manual no está disponible en este momento. Contacta al administrador.</p>
+        </div>
+    <?php endif; ?>
+</section>
+
     </main>
     <?php require __DIR__ . '/../includes/footer.php'; ?>
 </body>
