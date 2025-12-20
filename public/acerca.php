@@ -168,7 +168,7 @@ $pdfPath = 'uploads/manual.pdf.pdf';
     <?php 
 // --- CONFIGURACIÓN DEL NOMBRE DEL ARCHIVO ---
 // 1. Asegúrate de que el nombre aquí sea IGUAL al que subiste a GitHub
-$nombreRealDelArchivo = 'manualU.pdf'; 
+$nombreRealDelArchivo = 'manual.pdf.pdf'; 
 $pdfPath = 'uploads/' . $nombreRealDelArchivo; 
 ?>
 
