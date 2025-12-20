@@ -123,22 +123,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'Stock'     => $stockValue ?? 0.0,
             ];
 
-            try {
-                if ($action === 'create') {
-                    $inventoryModel->create($payload, $currentUserId);
-                    $_SESSION['flash_success'] = 'producto agregado al inventario.';
-                } else {
-                    $affected = $inventoryModel->update((int) $editingId, $payload, $currentUserId);
-                    $_SESSION['flash_success'] = $affected > 0
-                        ? 'producto actualizado correctamente.'
-                        : 'No hubo cambios para guardar.';
-                }
-            } catch (\Throwable $th) {
-                $_SESSION['flash_error'] = 'No fue posible guardar el producto. Intenta nuevamente.';
-            }
+           try {
+            // 1. Verificar si el nombre ya existe en la base de datos
+            $existing = $inventoryModel->findByName($formValues['Nombre']);
 
-            header('Location: ' . $redirectUrl);
-            exit;
+            if ($action === 'create') {
+                if ($existing) {
+                    // Si el producto ya existe, detenemos la ejecución
+                    $_SESSION['flash_error'] = "Error: El producto '{$formValues['Nombre']}' ya está registrado.";
+                    header('Location: ' . $redirectUrl);
+                    exit;
+                }
+                $inventoryModel->create($payload, $currentUserId);
+                $_SESSION['flash_success'] = 'producto agregado al inventario.';
+            } else {
+                // 2. En actualización, verificar que el nombre no le pertenezca a OTRO producto
+                if ($existing && (int)$existing['CodigoProducto'] !== (int)$editingId) {
+                    $_SESSION['flash_error'] = "Error: Ya existe otro producto con el nombre '{$formValues['Nombre']}'.";
+                    header('Location: ' . $redirectUrl);
+                    exit;
+                }
+                $affected = $inventoryModel->update((int) $editingId, $payload, $currentUserId);
+                $_SESSION['flash_success'] = $affected > 0
+                    ? 'producto actualizado correctamente.'
+                    : 'No hubo cambios para guardar.';
+            }
+        } catch (\Throwable $th) {
+            $_SESSION['flash_error'] = 'No fue posible guardar el producto. Intenta nuevamente.';
+        }
+
+        header('Location: ' . $redirectUrl);
+        exit;
         }
     } elseif ($action === 'delete') {
         $codigo = filter_input(INPUT_POST, 'codigo', FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
