@@ -68,9 +68,15 @@ $formValues = [
 $mode = 'create';
 $editingId = null;
 
+
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
     $currentUserId = $user['id'] ?? null;
+
+    
+
 
     if (in_array($action, ['create', 'update'], true)) {
         $formValues['Nombre'] = trim((string) filter_input(INPUT_POST, 'nombre', FILTER_UNSAFE_RAW));
@@ -115,6 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $formErrors[] = 'No se pudo identificar el producto a actualizar.';
             }
         }
+
 
         if (empty($formErrors)) {
             $payload = [
@@ -258,7 +265,7 @@ $pagedItems = $totalItems > 0 ? array_slice($items, $inventoryOffset, $inventory
     <main class="inventory-layout">
         <section class="inventory-hero">
             <div>
-                <p class="eyebrow">Control de productos</p>
+                <p class="eyebrow">Control de productos </p>
                 <h1>Inventario operativo</h1>
                 <p>Gestiona altas, actualizaciones y bajas lógicas de tus recursos. Último ajuste: <?= (new DateTime('now', new DateTimeZone('America/Costa_Rica')))->format('d/m/Y H:i'); ?>.</p>
                 <div class="inventory-stats">
@@ -341,11 +348,11 @@ $pagedItems = $totalItems > 0 ? array_slice($items, $inventoryOffset, $inventory
                                     $tipo = (string) $item['TipoVenta'];
                                     $precio = (float) $item['Precio'];
                                     $stock = (float) $item['Stock'];
-                                    $fecha = (string) $item['FechaActualiza'];
+                                    $fecha = date('d/m/Y H:i', strtotime($item['FechaActualiza'] . ' -6 hours'));
                                     $rowIndex = strtolower($nombre . ' ' . $tipo);
                                     $isLow = $stock <= 5;
-                                    $fechaTimestamp = strtotime($fecha);
-                                    $fechaFormato = $fechaTimestamp ? date('d/m/Y H:i', $fechaTimestamp) : 'Sin registro';
+                                    //$fechaTimestamp = strtotime($fecha);
+                                    //$fechaFormato = $fechaTimestamp ? date('d/m/Y H:i', $fechaTimestamp) : 'Sin registro';
                                     $editParams = $currentQueryParams;
                                     $editParams['edit'] = $codigo;
                                     $editLink = $inventoryBaseUrl . ($editParams ? '?' . http_build_query($editParams) : '');
@@ -361,7 +368,7 @@ $pagedItems = $totalItems > 0 ? array_slice($items, $inventoryOffset, $inventory
                                     <td><span class="pill"><?= e($tipo); ?></span></td>
                                     <td>₡<?= number_format($precio, 2); ?></td>
                                     <td><?= number_format($stock, 2); ?></td>
-                                    <td><?= e($fechaFormato); ?></td>
+                                    <td><?= e($fecha); ?></td>
                                     <td>
                                         <div class="action-buttons">
                                             <button type="button"
@@ -424,7 +431,7 @@ $pagedItems = $totalItems > 0 ? array_slice($items, $inventoryOffset, $inventory
                         <a href="<?= e($redirectUrl); ?>">Cancelar</a>
                     </div>
                 <?php endif; ?>
-                <h2><?= $mode === 'update' ? 'Actualizar producto' : 'Registrar Producto'; ?></h2>
+                <h2><?= $mode === 'update' ? 'Actualizar material' : 'Registrar Producto'; ?></h2>
                 <p><?= $mode === 'update' ? 'Modifica los campos requeridos y guarda los cambios.' : 'Completa el formulario para agregar un nuevo insumo.'; ?></p>
                 <form method="post" class="inventory-form" action="<?= e($formActionUrl); ?>">
                     <input type="hidden" name="action" value="<?= $mode === 'update' ? 'update' : 'create'; ?>">
@@ -432,7 +439,7 @@ $pagedItems = $totalItems > 0 ? array_slice($items, $inventoryOffset, $inventory
                         <input type="hidden" name="codigo" value="<?= (int) $editingId; ?>">
                     <?php endif; ?>
                     <div class="form-group">
-                        <label for="nombre">Nombre del producto</label>
+                        <label for="nombre">Nombre del material</label>
                         <input type="text" id="nombre" name="nombre" maxlength="100" required value="<?= e($formValues['Nombre']); ?>">
                     </div>
                     <div class="form-group">
@@ -497,7 +504,7 @@ $pagedItems = $totalItems > 0 ? array_slice($items, $inventoryOffset, $inventory
         <div class="modal-dialog">
             <button type="button" class="modal-close" data-close-modal>&times;</button>
             <p class="eyebrow">Confirmar eliminación</p>
-            <h3>¿Deseas eliminar este producto?</h3>
+            <h3>¿Deseas eliminar este material?</h3>
             <p>Esta acción aplicará un soft delete: el registro quedará inactivo pero podrás recuperarlo desde base de datos.</p>
             <div class="modal-warning">
                 <strong id="delete-name">-</strong>
