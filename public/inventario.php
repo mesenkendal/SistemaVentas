@@ -102,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $nameLength = function_exists('mb_strlen') ? mb_strlen($formValues['Nombre']) : strlen($formValues['Nombre']);
 
         if ($formValues['Nombre'] === '') {
-            $formErrors[] = 'El nombre del material es obligatorio.';
+            $formErrors[] = 'El nombre del producto es obligatorio.';
         } elseif ($nameLength > 100) {
             $formErrors[] = 'El nombre supera el límite permitido (100 caracteres).';
         }
@@ -130,7 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ) ?: null;
 
             if ($editingId === null) {
-                $formErrors[] = 'No se pudo identificar el material a actualizar.';
+                $formErrors[] = 'No se pudo identificar el producto a actualizar.';
             }
         }
 
@@ -146,15 +146,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             try {
                 if ($action === 'create') {
                     $inventoryModel->create($payload, $currentUserId);
-                    $_SESSION['flash_success'] = 'Material agregado al inventario.';
+                    $_SESSION['flash_success'] = 'producto agregado al inventario.';
                 } else {
                     $affected = $inventoryModel->update((int) $editingId, $payload, $currentUserId);
                     $_SESSION['flash_success'] = $affected > 0
-                        ? 'Material actualizado correctamente.'
+                        ? 'producto actualizado correctamente.'
                         : 'No hubo cambios para guardar.';
                 }
             } catch (\Throwable $th) {
-                $_SESSION['flash_error'] = 'No fue posible guardar el material. Intenta nuevamente.';
+                $_SESSION['flash_error'] = 'No fue posible guardar el producto. Intenta nuevamente.';
             }
 
             header('Location: ' . $redirectUrl);
@@ -163,12 +163,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($action === 'delete') {
         $codigo = filter_input(INPUT_POST, 'codigo', FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
         if ($codigo === false || $codigo === null) {
-            $_SESSION['flash_error'] = 'Material no válido para eliminar.';
+            $_SESSION['flash_error'] = 'producto no válido para eliminar.';
         } else {
             $rows = $inventoryModel->delete((int) $codigo, $currentUserId);
             $_SESSION['flash_success'] = $rows > 0
-                ? 'Material eliminado (soft delete) exitosamente.'
-                : 'No fue posible eliminar el material solicitado.';
+                ? 'producto eliminado (soft delete) exitosamente.'
+                : 'No fue posible eliminar el producto solicitado.';
         }
 
         header('Location: ' . $redirectUrl);
@@ -194,7 +194,7 @@ if ($mode === 'create' && isset($_GET['edit'])) {
                 'Stock'     => (string) $item['Stock'],
             ];
         } else {
-            $flashError = 'El material solicitado no existe o ya fue eliminado.';
+            $flashError = 'El producto solicitado no existe o ya fue eliminado.';
         }
     }
 }
@@ -277,7 +277,7 @@ $pagedItems = $totalItems > 0 ? array_slice($items, $inventoryOffset, $inventory
     <main class="inventory-layout">
         <section class="inventory-hero">
             <div>
-                <p class="eyebrow">Control de materiales</p>
+                <p class="eyebrow">Control de productos </p>
                 <h1>Inventario operativo</h1>
                 <p>Gestiona altas, actualizaciones y bajas lógicas de tus recursos. Último ajuste: <?= (new DateTime('now', new DateTimeZone('America/Costa_Rica')))->format('d/m/Y H:i'); ?>.</p>
                 <div class="inventory-stats">
@@ -360,11 +360,11 @@ $pagedItems = $totalItems > 0 ? array_slice($items, $inventoryOffset, $inventory
                                     $tipo = (string) $item['TipoVenta'];
                                     $precio = (float) $item['Precio'];
                                     $stock = (float) $item['Stock'];
-                                    $fecha = (string) $item['FechaActualiza'];
+                                    $fecha = date('d/m/Y H:i', strtotime($item['FechaActualiza'] . ' -6 hours'));
                                     $rowIndex = strtolower($nombre . ' ' . $tipo);
                                     $isLow = $stock <= 5;
-                                    $fechaTimestamp = strtotime($fecha);
-                                    $fechaFormato = $fechaTimestamp ? date('d/m/Y H:i', $fechaTimestamp) : 'Sin registro';
+                                    //$fechaTimestamp = strtotime($fecha);
+                                    //$fechaFormato = $fechaTimestamp ? date('d/m/Y H:i', $fechaTimestamp) : 'Sin registro';
                                     $editParams = $currentQueryParams;
                                     $editParams['edit'] = $codigo;
                                     $editLink = $inventoryBaseUrl . ($editParams ? '?' . http_build_query($editParams) : '');
@@ -380,7 +380,7 @@ $pagedItems = $totalItems > 0 ? array_slice($items, $inventoryOffset, $inventory
                                     <td><span class="pill"><?= e($tipo); ?></span></td>
                                     <td>₡<?= number_format($precio, 2); ?></td>
                                     <td><?= number_format($stock, 2); ?></td>
-                                    <td><?= e($fechaFormato); ?></td>
+                                    <td><?= e($fecha); ?></td>
                                     <td>
                                         <div class="action-buttons">
                                             <button type="button"
@@ -439,7 +439,7 @@ $pagedItems = $totalItems > 0 ? array_slice($items, $inventoryOffset, $inventory
             <section class="inventory-form-card">
                 <?php if ($mode === 'update' && $editingId !== null): ?>
                     <div class="editing-banner">
-                        Estás editando el material #<?= (int) $editingId; ?>
+                        Estás editando el producto #<?= (int) $editingId; ?>
                         <a href="<?= e($redirectUrl); ?>">Cancelar</a>
                     </div>
                 <?php endif; ?>
