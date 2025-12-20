@@ -82,24 +82,71 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stockValue = filter_var($formValues['Stock'], FILTER_VALIDATE_FLOAT);
 
         $nameLength = function_exists('mb_strlen') ? mb_strlen($formValues['Nombre']) : strlen($formValues['Nombre']);
-        // ESTA ES LA NUEVA PARTE PARA EVITAR DUPLICADOS
-    $itemsExistentes = $inventoryModel->all(); [cite: 48]
-    foreach ($itemsExistentes as $item) {
-        // Comparamos el nombre escrito con los que ya existen
-        if (strcasecmp(trim((string)$item['Nombre']), $formValues['Nombre']) === 0) {
-            
-            // Si estás creando uno nuevo y el nombre ya existe
-            if ($action === 'create') {
-                $formErrors[] = 'Ya existe un material con el nombre "' . htmlspecialchars($formValues['Nombre']) . '".';
-                break;
-            }
-            
-            // Si estás editando, solo da error si el nombre es de OTRO producto
-            if ($action === 'update' && (int)$item['CodigoProducto'] !== (int)$editingId) {
-                $formErrors[] = 'El nombre "' . htmlspecialchars($formValues['Nombre']) . '" ya lo tiene otro producto.';
-                break;
+
+      // 1. Validamos que no esté vacío o sea muy largo
+        if ($formValues['Nombre'] === '') {
+            $formErrors[] = 'El nombre del material es obligatorio.';
+        } elseif ($nameLength > 100) {
+            $formErrors[] = 'El nombre supera el límite permitido (100 caracteres).';
+        } else {
+            // 2. BUSCAMOS DUPLICADOS (Aquí está el truco)
+            $itemsExistentes = $inventoryModel->all(); 
+            foreach ($itemsExistentes as $item) {
+                // Comparamos el nombre que escribiste con los que ya existen en la base de datos
+                if (strcasecmp(trim((string)$item['Nombre']), $formValues['Nombre']) === 0) {
+                    
+                    // Si estás creando uno nuevo
+                    if ($action === 'create') {
+                        $formErrors[] = 'Ya existe un material con el nombre "' . e($formValues['Nombre']) . '".';
+                        break;
+                    }
+                    
+                    // Si estás editando uno existente (comprobamos que no sea el mismo ID)
+                    if ($action === 'update' && (int)$item['CodigoProducto'] !== (int)$editingId) {
+                        $formErrors[] = 'El nombre "' . e($formValues['Nombre']) . '" ya lo tiene otro producto.';
+                        break;
+                    }
+                }
             }
         }
+
+        // 3. Validaciones de los otros campos
+        if (!in_array($formValues['TipoVenta'], ['Kilo', 'Unidad'], true)) {
+            $formErrors[] = 'Selecciona un tipo de venta válido.';
+        }
+        if ($precioValue === false || $precioValue < 0) {
+            $formErrors[] = 'Ingresa un precio válido.';
+        }
+        if ($stockValue === false || $stockValue < 0) {
+            $formErrors[] = 'Ingresa un stock válido.';
+        }
+
+        // --- EL CAMBIO MÁS IMPORTANTE ESTÁ AQUÍ ---
+        // Solo si NO hay errores en el arreglo $formErrors, procedemos a guardar
+        if (empty($formErrors)) {
+            $payload = [
+                'Nombre'    => $formValues['Nombre'],
+                'TipoVenta' => $formValues['TipoVenta'],
+                'Precio'    => $precioValue ?? 0.0,
+                'Stock'     => $stockValue ?? 0.0,
+            ];
+
+            try {
+                if ($action === 'create') {
+                    $inventoryModel->create($payload, $currentUserId);
+                    $_SESSION['flash_success'] = 'Material agregado.';
+                } else {
+                    $inventoryModel->update((int) $editingId, $payload, $currentUserId);
+                    $_SESSION['flash_success'] = 'Material actualizado.';
+                }
+                header('Location: ' . $redirectUrl);
+                exit;
+            } catch (\Throwable $th) {
+                $_SESSION['flash_error'] = 'Error al guardar en la base de datos.';
+            }
+        } 
+        // Si hay errores, el código simplemente NO entra al "if" de arriba 
+        // y muestra los mensajes rojos que ya tienes configurados.
     }
 }
 
