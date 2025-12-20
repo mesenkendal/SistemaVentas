@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 date_default_timezone_set('America/Costa_Rica');
+
 use SistemaVentas\Models\BitacoraModel;
 use function htmlspecialchars as e;
 
@@ -146,7 +147,7 @@ $decodePayload = static function (?string $json): array {
             <div>
                 <p class="eyebrow">Bit&aacute;cora del sistema</p>
                 <h1>Auditor&iacute;a en tiempo real</h1>
-                <p>Consulta cada alta, actualizaci&oacute;n o baja registrada en las tablas principales. Último evento: <?= e($latestFormatted); ?>.</p>
+                <p>Consulta cada alta, actualizaci&oacute;n o baja registrada en las tablas principales. Último evento: <?= (new DateTime('now', new DateTimeZone('America/Costa_Rica')))->format('d/m/Y g:i A'); ?>.</p>
             </div>
             <div class="reports-stats">
                 <div>
