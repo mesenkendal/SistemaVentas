@@ -352,7 +352,7 @@ $pagedItems = $totalItems > 0 ? array_slice($items, $inventoryOffset, $inventory
                                     $rowIndex = strtolower($nombre . ' ' . $tipo);
                                     $isLow = $stock <= 5;
                                     $fechaTimestamp = strtotime($fecha);
-                                    $fechaFormato = $fechaTimestamp ? date('d/m/Y H:i', $fechaTimestamp) : 'Sin registro';
+                                    $fechaFormato = $fechaTimestamp ? date('d/m/Y', $fechaTimestamp) : 'Sin registro';
                                     $editParams = $currentQueryParams;
                                     $editParams['edit'] = $codigo;
                                     $editLink = $inventoryBaseUrl . ($editParams ? '?' . http_build_query($editParams) : '');
