@@ -378,7 +378,7 @@ $pagedItems = $totalItems > 0 ? array_slice($items, $inventoryOffset, $inventory
                                                 data-tipoventa="<?= e($tipo); ?>"
                                                 data-precio="<?= number_format($precio, 2, '.', ''); ?>"
                                                 data-stock="<?= number_format($stock, 2, '.', ''); ?>"
-                                                data-fecha="<?= e($fechaFormato); ?>">
+                                                data-fecha="<?= e($fecha); ?>"
                                                 Ver
                                             </button>
                                             <a class="ghost-btn" href="<?= e($editLink); ?>">Editar</a>
@@ -430,7 +430,7 @@ $pagedItems = $totalItems > 0 ? array_slice($items, $inventoryOffset, $inventory
                         <a href="<?= e($redirectUrl); ?>">Cancelar</a>
                     </div>
                 <?php endif; ?>
-                <h2><?= $mode === 'update' ? 'Actualizar material' : 'Registrar Producto'; ?></h2>
+                <h2><?= $mode === 'update' ? 'Actualizar producto' : 'Registrar Producto'; ?></h2>
                 <p><?= $mode === 'update' ? 'Modifica los campos requeridos y guarda los cambios.' : 'Completa el formulario para agregar un nuevo insumo.'; ?></p>
                 <form method="post" class="inventory-form" action="<?= e($formActionUrl); ?>">
                     <input type="hidden" name="action" value="<?= $mode === 'update' ? 'update' : 'create'; ?>">
@@ -438,7 +438,7 @@ $pagedItems = $totalItems > 0 ? array_slice($items, $inventoryOffset, $inventory
                         <input type="hidden" name="codigo" value="<?= (int) $editingId; ?>">
                     <?php endif; ?>
                     <div class="form-group">
-                        <label for="nombre">Nombre del material</label>
+                        <label for="nombre">Nombre del producto</label>
                         <input type="text" id="nombre" name="nombre" maxlength="100" required value="<?= e($formValues['Nombre']); ?>">
                     </div>
                     <div class="form-group">
@@ -503,7 +503,7 @@ $pagedItems = $totalItems > 0 ? array_slice($items, $inventoryOffset, $inventory
         <div class="modal-dialog">
             <button type="button" class="modal-close" data-close-modal>&times;</button>
             <p class="eyebrow">Confirmar eliminación</p>
-            <h3>¿Deseas eliminar este material?</h3>
+            <h3>¿Deseas eliminar este producto?</h3>
             <p>Esta acción aplicará un soft delete: el registro quedará inactivo pero podrás recuperarlo desde base de datos.</p>
             <div class="modal-warning">
                 <strong id="delete-name">-</strong>
