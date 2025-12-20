@@ -81,13 +81,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $precioValue = filter_var($formValues['Precio'], FILTER_VALIDATE_FLOAT);
         $stockValue = filter_var($formValues['Stock'], FILTER_VALIDATE_FLOAT);
 
-        $nameLength = function_exists('mb_strlen') ? mb_strlen($formValues['Nombre']) : strlen($formValues['Nombre']);
-
-        if ($formValues['Nombre'] === '') {
-            $formErrors[] = 'El nombre del producto es obligatorio.';
-        } elseif ($nameLength > 100) {
-            $formErrors[] = 'El nombre supera el límite permitido (100 caracteres).';
+        // NUEVA VALIDACIÓN: Verificar si el nombre ya existe
+    // Buscamos en todos los items si hay coincidencia exacta (sin distinguir mayúsculas/minúsculas)
+    $allExistingItems = $inventoryModel->all();
+    foreach ($allExistingItems as $item) {
+        // Si es una creación, cualquier coincidencia es error.
+        // Si es actualización, ignoramos el registro que estamos editando actualmente.
+        if (strcasecmp(trim($item['Nombre']), $formValues['Nombre']) === 0) {
+            if ($action === 'create' || ($action === 'update' && (int)$item['CodigoProducto'] !== (int)$editingId)) {
+                $formErrors[] = 'Ya existe un material registrado con el nombre "' . e($formValues['Nombre']) . '".';
+                break;
+            }
         }
+    }
+}
+// ... resto de las validaciones (TipoVenta, Precio, etc.) ...
 
         if (!in_array($formValues['TipoVenta'], ['Kilo', 'Unidad'], true)) {
             $formErrors[] = 'Selecciona un tipo de venta válido.';
