@@ -129,60 +129,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'Stock'     => $stockValue ?? 0.0,
             ];
 
-          try {
-            if ($action === 'create') {
-                // 1. Obtenemos los productos actualizados directamente del modelo
-                $todosLosProductos = $inventoryModel->all();
-                
-                // 2. Limpiamos el nombre que el usuario intenta ingresar
-                $nombreNuevo = strtolower(trim($formValues['Nombre']));
+      try {
+    if ($action === 'create') {
+        // Forzamos una limpieza total del nombre ingresado
+        $nombreNuevo = trim((string)$formValues['Nombre']);
 
-                foreach ($todosLosProductos as $item) {
-                    // 3. Limpiamos el nombre del producto existente en la base de datos
-                    $nombreExistente = strtolower(trim((string)$item['Nombre']));
-
-                    if ($nombreNuevo === $nombreExistente) {
-                        $_SESSION['flash_error'] = 'Error: El producto "' . e($formValues['Nombre']) . '" ya existe.';
-                        header('Location: ' . $redirectUrl);
-                        exit;
-                    }
-                }
+        // Buscamos directamente en los datos frescos del modelo
+        $todosLosProductos = $inventoryModel->all();
+        
+        foreach ($todosLosProductos as $item) {
+            // Comparamos ignorando mayúsculas/minúsculas y espacios
+            if (strcasecmp(trim((string)$item['Nombre']), $nombreNuevo) === 0) {
+                $_SESSION['flash_error'] = "El producto '$nombreNuevo' ya existe en el sistema.";
+                header('Location: ' . $redirectUrl);
+                exit; // DETIENE la ejecución inmediatamente
             }
-
-            // Si pasó la validación o es un 'update', procedemos:
-            if ($action === 'create') {
-                $inventoryModel->create($payload, $currentUserId);
-                $_SESSION['flash_success'] = 'Material agregado al inventario.';
-            } else {
-                $editingId = filter_input(INPUT_POST, 'codigo', FILTER_VALIDATE_INT);
-                $affected = $inventoryModel->update((int) $editingId, $payload, $currentUserId);
-                $_SESSION['flash_success'] = $affected > 0
-                    ? 'Material actualizado correctamente.'
-                    : 'No hubo cambios para guardar.';
-            }
-        } catch (\Throwable $th) {
-            $_SESSION['flash_error'] = 'Error en el sistema: ' . $th->getMessage();
-            header('Location: ' . $redirectUrl);
-            exit;
         }
-    } elseif ($action === 'delete') {
-        $codigo = filter_input(INPUT_POST, 'codigo', FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
-        if ($codigo === false || $codigo === null) {
-            $_SESSION['flash_error'] = 'Material no válido para eliminar.';
-        } else {
-            $rows = $inventoryModel->delete((int) $codigo, $currentUserId);
-            $_SESSION['flash_success'] = $rows > 0
-                ? 'Material eliminado (soft delete) exitosamente.'
-                : 'No fue posible eliminar el material solicitado.';
-        }
-
-        header('Location: ' . $redirectUrl);
-        exit;
-    } else {
-        $_SESSION['flash_error'] = 'Acción no permitida.';
-        header('Location: ' . $redirectUrl);
-        exit;
     }
+
+    // Si llegó aquí, el producto es nuevo o es una actualización
+    if ($action === 'create') {
+        $inventoryModel->create($payload, $currentUserId);
+        $_SESSION['flash_success'] = 'Material agregado correctamente.';
+    } else {
+        $inventoryModel->update((int)$editingId, $payload, $currentUserId);
+        $_SESSION['flash_success'] = 'Material actualizado correctamente.';
+    }
+
+    header('Location: ' . $redirectUrl);
+    exit;
+
+} catch (\Throwable $th) {
+    // Si la base de datos rechaza el duplicado (paso 1), caerá aquí
+    if (str_contains($th->getMessage(), 'Duplicate entry') || $th->getCode() == 23000) {
+        $_SESSION['flash_error'] = "Error: No se permiten nombres duplicados.";
+    } else {
+        $_SESSION['flash_error'] = 'Error al procesar: ' . $th->getMessage();
+    }
+    header('Location: ' . $redirectUrl);
+    exit;
 }
 
 if ($mode === 'create' && isset($_GET['edit'])) {
