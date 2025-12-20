@@ -77,6 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     
 
+
     if (in_array($action, ['create', 'update'], true)) {
         $formValues['Nombre'] = trim((string) filter_input(INPUT_POST, 'nombre', FILTER_UNSAFE_RAW));
         $formValues['TipoVenta'] = (string) filter_input(INPUT_POST, 'tipoVenta', FILTER_UNSAFE_RAW);
@@ -121,6 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
+
         if (empty($formErrors)) {
             $payload = [
                 'Nombre'    => $formValues['Nombre'],
@@ -129,39 +131,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'Stock'     => $stockValue ?? 0.0,
             ];
 
-       try {
-
+            try {
                 if ($action === 'create') {
-
                     $inventoryModel->create($payload, $currentUserId);
-
-                    $_SESSION['flash_success'] = 'Producto agregado al inventario.';
-
+                    $_SESSION['flash_success'] = 'Material agregado al inventario.';
                 } else {
-
                     $affected = $inventoryModel->update((int) $editingId, $payload, $currentUserId);
-
                     $_SESSION['flash_success'] = $affected > 0
-
-                        ? 'Producto actualizado correctamente.'
-
+                        ? 'Material actualizado correctamente.'
                         : 'No hubo cambios para guardar.';
-
                 }
-
             } catch (\Throwable $th) {
-
-                $_SESSION['flash_error'] = 'No fue posible guardar el Producto. Intenta nuevamente.';
-
+                $_SESSION['flash_error'] = 'No fue posible guardar el material. Intenta nuevamente.';
             }
 
-
-
             header('Location: ' . $redirectUrl);
-
             exit;
-
         }
+    } elseif ($action === 'delete') {
+        $codigo = filter_input(INPUT_POST, 'codigo', FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+        if ($codigo === false || $codigo === null) {
+            $_SESSION['flash_error'] = 'Material no válido para eliminar.';
+        } else {
+            $rows = $inventoryModel->delete((int) $codigo, $currentUserId);
+            $_SESSION['flash_success'] = $rows > 0
+                ? 'Material eliminado (soft delete) exitosamente.'
+                : 'No fue posible eliminar el material solicitado.';
+        }
+
+        header('Location: ' . $redirectUrl);
+        exit;
+    } else {
+        $_SESSION['flash_error'] = 'Acción no permitida.';
+        header('Location: ' . $redirectUrl);
+        exit;
+    }
+}
 
 if ($mode === 'create' && isset($_GET['edit'])) {
     $editCode = filter_input(INPUT_GET, 'edit', FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
@@ -262,7 +267,7 @@ $pagedItems = $totalItems > 0 ? array_slice($items, $inventoryOffset, $inventory
             <div>
                 <p class="eyebrow">Control de materiales</p>
                 <h1>Inventario operativo</h1>
-                <p>Gestiona altas, actualizaciones y bajas lógicas de tus recursos. Último ajuste: <?= (new DateTime('now', new DateTimeZone('America/Costa_Rica')))->format('d/m/Y g:i A'); ?>.</p>
+                <p>Gestiona altas, actualizaciones y bajas lógicas de tus recursos. Último ajuste: <?= (new DateTime('now', new DateTimeZone('America/Costa_Rica')))->format('d/m/Y H:i'); ?>.</p>
                 <div class="inventory-stats">
                     <div>
                         <span>Total SKU</span>
