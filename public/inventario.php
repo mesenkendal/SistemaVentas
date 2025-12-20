@@ -363,11 +363,11 @@ $pagedItems = $totalItems > 0 ? array_slice($items, $inventoryOffset, $inventory
                                     $tipo = (string) $item['TipoVenta'];
                                     $precio = (float) $item['Precio'];
                                     $stock = (float) $item['Stock'];
-                                    $fecha = (string) $item['FechaActualiza'];
+                                    $fecha = (new DateTime($item['FechaActualiza'], new DateTimeZone('UTC')))->setTimezone(new DateTimeZone('America/Costa_Rica'))->format('d/m/Y H:i');
                                     $rowIndex = strtolower($nombre . ' ' . $tipo);
                                     $isLow = $stock <= 5;
-                                    $fechaTimestamp = strtotime($fecha);
-                                    $fechaFormato = $fechaTimestamp ? date('d/m/Y H:i', $fechaTimestamp) : 'Sin registro';
+                                    //$fechaTimestamp = strtotime($fecha);
+                                    //$fechaFormato = $fechaTimestamp ? date('d/m/Y H:i', $fechaTimestamp) : 'Sin registro';
                                     $editParams = $currentQueryParams;
                                     $editParams['edit'] = $codigo;
                                     $editLink = $inventoryBaseUrl . ($editParams ? '?' . http_build_query($editParams) : '');
@@ -383,7 +383,7 @@ $pagedItems = $totalItems > 0 ? array_slice($items, $inventoryOffset, $inventory
                                     <td><span class="pill"><?= e($tipo); ?></span></td>
                                     <td>₡<?= number_format($precio, 2); ?></td>
                                     <td><?= number_format($stock, 2); ?></td>
-                                    <td><?= e($fechaFormato); ?></td>
+                                    <td><?= e($fecha); ?></td>
                                     <td>
                                         <div class="action-buttons">
                                             <button type="button"
