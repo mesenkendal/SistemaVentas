@@ -129,33 +129,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'Stock'     => $stockValue ?? 0.0,
             ];
 
-      try {
-            // --- NUEVA VALIDACIÓN DE DUPLICADOS ---
-            if ($action === 'create') {
-                $items = $inventoryModel->all(); // Obtenemos la lista actual para comparar
-                foreach ($items as $item) {
-                    if (strcasecmp(trim((string)$item['Nombre']), $formValues['Nombre']) === 0) {
-                        $_SESSION['flash_error'] = 'El producto "' . e($formValues['Nombre']) . '" ya existe en el inventario.';
-                        header('Location: ' . $redirectUrl);
-                        exit;
-                    }
-                }
-            }
-            // ---------------------------------------
+       try {
 
-            if ($action === 'create') {
-                $inventoryModel->create($payload, $currentUserId);
-                $_SESSION['flash_success'] = 'producto agregado al inventario.';
-            } else {
-                $affected = $inventoryModel->update((int) $editingId, $payload, $currentUserId);
-                $_SESSION['flash_success'] = $affected > 0
-                    ? 'Producto actualizado correctamente.'
-                    : 'No hubo cambios para guardar.';
+                if ($action === 'create') {
+
+                    $inventoryModel->create($payload, $currentUserId);
+
+                    $_SESSION['flash_success'] = 'Producto agregado al inventario.';
+
+                } else {
+
+                    $affected = $inventoryModel->update((int) $editingId, $payload, $currentUserId);
+
+                    $_SESSION['flash_success'] = $affected > 0
+
+                        ? 'Producto actualizado correctamente.'
+
+                        : 'No hubo cambios para guardar.';
+
+                }
+
+            } catch (\Throwable $th) {
+
+                $_SESSION['flash_error'] = 'No fue posible guardar el Producto. Intenta nuevamente.';
+
             }
-        } catch (\Throwable $th {
-            $_SESSION['flash_error'] = 'Error en el sistema: ' . $th->getMessage();
+
+
+
             header('Location: ' . $redirectUrl);
+
             exit;
+
         }
 
 if ($mode === 'create' && isset($_GET['edit'])) {
