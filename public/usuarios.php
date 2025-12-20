@@ -282,7 +282,7 @@ $pagedUsers = $activeCount > 0 ? array_slice($activeUsers, $offset, $usersPerPag
             <div>
                 <p class="eyebrow">Directorio interno</p>
                 <h1>Gestión de usuarios</h1>
-                <p>Controla accesos, roles y altas recientes. Último registro: <?= (new DateTime('now', new DateTimeZone('America/Costa_Rica')))->format('d/m/Y g:i A'); ?>.</p>
+                <p>Controla accesos, roles y altas recientes. Último registro: <?= (new DateTime('now', new DateTimeZone('America/Costa_Rica')))->format('d/m/Y H:i'); ?>.</p>
                 <div class="inventory-stats">
                     <div>
                         <span>Usuarios activos</span>
