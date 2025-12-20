@@ -82,7 +82,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stockValue = filter_var($formValues['Stock'], FILTER_VALIDATE_FLOAT);
 
         $nameLength = function_exists('mb_strlen') ? mb_strlen($formValues['Nombre']) : strlen($formValues['Nombre']);
-
         if ($formValues['Nombre'] === '') {
             $formErrors[] = 'El nombre del producto es obligatorio.';
         } elseif ($nameLength > 100) {
