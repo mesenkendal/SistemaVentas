@@ -201,7 +201,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 <<<<<<< HEAD
-        
+
         if ($action === 'create' && empty($formErrors)) {
             $todosLosItems = $inventoryModel->all(); 
             foreach ($todosLosItems as $item) {
