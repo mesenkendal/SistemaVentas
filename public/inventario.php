@@ -83,79 +83,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $nameLength = function_exists('mb_strlen') ? mb_strlen($formValues['Nombre']) : strlen($formValues['Nombre']);
 
-        // 1. Validaciones de formato
         if ($formValues['Nombre'] === '') {
-            $formErrors[] = 'El nombre del material es obligatorio.';
+            $formErrors[] = 'El nombre del producto es obligatorio.';
         } elseif ($nameLength > 100) {
             $formErrors[] = 'El nombre supera el límite permitido (100 caracteres).';
-        } else {
-            // 2. VALIDACIÓN DE DUPLICADOS (Versión Robusta)
-            $itemsExistentes = $inventoryModel->all(); 
-            $nombreNuevoLimpio = mb_strtolower(trim($formValues['Nombre']));
-
-            foreach ($itemsExistentes as $item) {
-                // Verificamos si la columna es 'Nombre' o 'nombre' por si acaso
-                $nombreDBRaw = $item['Nombre'] ?? $item['nombre'] ?? null;
-                
-                if ($nombreDBRaw !== null) {
-                    $nombreDBLimpio = mb_strtolower(trim((string)$nombreDBRaw));
-
-                    if ($nombreDBLimpio === $nombreNuevoLimpio) {
-                        // Si es creación, cualquier coincidencia es error
-                        if ($action === 'create') {
-                            $formErrors[] = 'Ya existe un material con el nombre "' . e($formValues['Nombre']) . '".';
-                            break;
-                        }
-                        
-                        // Si es actualización, validamos que el CódigoProducto sea el mismo
-                        // Nota: Verifica si tu columna de ID se llama 'CodigoProducto' o 'id'
-                        $idDB = $item['CodigoProducto'] ?? $item['id'] ?? 0;
-                        if ($action === 'update' && (int)$idDB !== (int)$editingId) {
-                            $formErrors[] = 'El nombre "' . e($formValues['Nombre']) . '" ya lo tiene otro producto.';
-                            break;
-                        }
-                    }
-                }
-            }
-            
         }
 
-        // 3. Validaciones de otros campos [cite: 22, 23, 24]
-        if (!in_array($formValues['TipoVenta'], ['Kilo', 'Unidad'], true)) {
-            $formErrors[] = 'Selecciona un tipo de venta válido.';
-        }
-        if ($precioValue === false || $precioValue < 0) {
-            $formErrors[] = 'Ingresa un precio válido.';
-        }
-        if ($stockValue === false || $stockValue < 0) {
-            $formErrors[] = 'Ingresa un stock válido.';
-        }
-
-        // 4. EL CAMBIO VITAL: Solo guardar si NO hay errores 
-        if (empty($formErrors)) {
-            $payload = [
-                'Nombre'    => $formValues['Nombre'],
-                'TipoVenta' => $formValues['TipoVenta'],
-                'Precio'    => $precioValue ?? 0.0,
-                'Stock'     => $stockValue ?? 0.0,
-            ];
-
-            try {
-                if ($action === 'create') {
-                    $inventoryModel->create($payload, $currentUserId); // 
-                    $_SESSION['flash_success'] = 'Material agregado.';
-                } else {
-                    $inventoryModel->update((int) $editingId, $payload, $currentUserId); // [cite: 31]
-                    $_SESSION['flash_success'] = 'Material actualizado.';
-                }
-                header('Location: ' . $redirectUrl); // [cite: 34]
-                exit;
-            } catch (\Throwable $th) {
-                $_SESSION['flash_error'] = 'Error al guardar en la base de datos.'; // [cite: 34]
-            }
-        }
-   }
-}
         if (!in_array($formValues['TipoVenta'], ['Kilo', 'Unidad'], true)) {
             $formErrors[] = 'Selecciona un tipo de venta válido.';
         }
