@@ -18,6 +18,14 @@ final class InventoryModel extends BaseModel
         return $this->fetchOne('SELECT * FROM ' . self::TABLE . ' WHERE CodigoProducto = ? AND Activo = 1', [$codigo]);
     }
 
+    /**
+     * Busca un producto por su nombre para evitar duplicados.
+     */
+    public function findByName(string $nombre): ?array
+    {
+        return $this->fetchOne('SELECT * FROM ' . self::TABLE . ' WHERE Nombre = ? AND Activo = 1', [$nombre]);
+    }
+
     public function create(array $data, ?int $userId = null): int
     {
         $sql = 'INSERT INTO ' . self::TABLE . ' (Nombre, TipoVenta, Precio, Stock)
