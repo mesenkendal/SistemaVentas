@@ -82,11 +82,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stockValue = filter_var($formValues['Stock'], FILTER_VALIDATE_FLOAT);
 
         $nameLength = function_exists('mb_strlen') ? mb_strlen($formValues['Nombre']) : strlen($formValues['Nombre']);
-        if ($formValues['Nombre'] === '') {
-            $formErrors[] = 'El nombre del producto es obligatorio.';
-        } elseif ($nameLength > 100) {
-            $formErrors[] = 'El nombre supera el límite permitido (100 caracteres).';
+        // ESTA ES LA NUEVA PARTE PARA EVITAR DUPLICADOS
+    $itemsExistentes = $inventoryModel->all(); [cite: 48]
+    foreach ($itemsExistentes as $item) {
+        // Comparamos el nombre escrito con los que ya existen
+        if (strcasecmp(trim((string)$item['Nombre']), $formValues['Nombre']) === 0) {
+            
+            // Si estás creando uno nuevo y el nombre ya existe
+            if ($action === 'create') {
+                $formErrors[] = 'Ya existe un material con el nombre "' . htmlspecialchars($formValues['Nombre']) . '".';
+                break;
+            }
+            
+            // Si estás editando, solo da error si el nombre es de OTRO producto
+            if ($action === 'update' && (int)$item['CodigoProducto'] !== (int)$editingId) {
+                $formErrors[] = 'El nombre "' . htmlspecialchars($formValues['Nombre']) . '" ya lo tiene otro producto.';
+                break;
+            }
         }
+    }
+}
 
         if (!in_array($formValues['TipoVenta'], ['Kilo', 'Unidad'], true)) {
             $formErrors[] = 'Selecciona un tipo de venta válido.';
