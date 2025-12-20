@@ -76,6 +76,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $currentUserId = $user['id'] ?? null;
 
 
+    // --- VALIDACIÓN DE DUPLICADOS ---
+    if ($action === 'create') {
+        $nombreNuevo = trim((string) filter_input(INPUT_POST, 'nombre', FILTER_UNSAFE_RAW));
+        $productosExistentes = $inventoryModel->all() ?: [];
+        
+        foreach ($productosExistentes as $item) {
+            // Comparamos contra la columna 'Nombre' de tu base de datos
+            if (isset($item['Nombre']) && strcasecmp(trim((float)$item['Nombre']), $nombreNuevo) === 0) {
+                $formErrors[] = "Error: El producto '$nombreNuevo' ya existe.";
+                $action = 'error'; // Esto evita que se ejecute el guardado más abajo
+                break;
+            }
+        
+        }
+    }
 
     if (in_array($action, ['create', 'update'], true)) {
         $formValues['Nombre'] = trim((string) filter_input(INPUT_POST, 'nombre', FILTER_UNSAFE_RAW));
