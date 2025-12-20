@@ -129,17 +129,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'Stock'     => $stockValue ?? 0.0,
             ];
 
-            try {
-                if ($action === 'create') {
-                    $inventoryModel->create($payload, $currentUserId);
-                    $_SESSION['flash_success'] = 'Material agregado al inventario.';
-                } else {
-                    $affected = $inventoryModel->update((int) $editingId, $payload, $currentUserId);
-                    $_SESSION['flash_success'] = $affected > 0
-                        ? 'Material actualizado correctamente.'
-                        : 'No hubo cambios para guardar.';
+          try {
+            // --- NUEVA VALIDACIÓN DE DUPLICADOS ---
+            if ($action === 'create') {
+                $items = $inventoryModel->all(); // Obtenemos la lista actual para comparar
+                foreach ($items as $item) {
+                    if (strcasecmp(trim((string)$item['Nombre']), $formValues['Nombre']) === 0) {
+                        $_SESSION['flash_error'] = 'El producto "' . e($formValues['Nombre']) . '" ya existe en el inventario.';
+                        header('Location: ' . $redirectUrl);
+                        exit;
+                    }
                 }
-            } catch (\Throwable $th) {
+            }
+            // ---------------------------------------
+
+            if ($action === 'create') {
+                $inventoryModel->create($payload, $currentUserId);
+                $_SESSION['flash_success'] = 'producto agregado al inventario.';
+            } else {
+                $affected = $inventoryModel->update((int) $editingId, $payload, $currentUserId);
+                $_SESSION['flash_success'] = $affected > 0
+                    ? 'Producto actualizado correctamente.'
+                    : 'No hubo cambios para guardar.';
+            }
+        } catch (\Throwable $th {
                 $_SESSION['flash_error'] = 'No fue posible guardar el material. Intenta nuevamente.';
             }
 
