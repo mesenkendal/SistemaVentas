@@ -200,6 +200,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 
+<<<<<<< HEAD
+        
+        if ($action === 'create' && empty($formErrors)) {
+            $todosLosItems = $inventoryModel->all(); 
+            foreach ($todosLosItems as $item) {
+                if (strcasecmp(trim((string)$item['Nombre']), $formValues['Nombre']) === 0) {
+                    $formErrors[] = 'Ya existe un producto con el nombre: ' . e($formValues['Nombre']);
+                    break;
+                }
+            }
+        }
+        
+
+
+        
+=======
         // --- PEGA EL NUEVO CÓDIGO AQUÍ ---
         if ($action === 'create' && empty($formErrors)) {
             $todosLosItems = $inventoryModel->all(); 
@@ -213,6 +229,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // --- FIN DEL NUEVO CÓDIGO ---
 
 
+>>>>>>> 5354dbf705143b998ba99bb842726d3e31a87c60
         if ($action === 'update') {
 
             $mode = 'update';
